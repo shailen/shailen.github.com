@@ -3,6 +3,7 @@ layout: post
 title: "starting to blog with octopress"
 date: 2012-11-12 10:27
 comments: true
+published: true
 categories: 
 ---
 
