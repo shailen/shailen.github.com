@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[Shailen's tech blog]]></title>
   <link href="http://shailen.github.com/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-11-12T10:15:48-08:00</updated>
+  <updated>2012-11-12T10:58:24-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Shailen Tuli]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[starting to blog with octopress]]></title>
+    <link href="http://shailen.github.com/blog/2012/11/12/starting-to-blog-with-octopress/"/>
+    <updated>2012-11-12T10:27:00-08:00</updated>
+    <id>http://shailen.github.com/blog/2012/11/12/starting-to-blog-with-octopress</id>
+    <content type="html"><![CDATA[<p>I recently started working at Google. I expect to be writing in this space about Dart, HTML5,
+Web Components and whatever else I encounter that might be interesting to anyone else.</p>
+
+<p>This blog is created using Octopress, a framework designed for Jekyll, the static blogging engine
+that powers Github Pages. Using Octopress, I can use Markdown, embed code from my filesystem, download and embed gists,
+embed code from jsFiddle, and publish easily via a git push.</p>
+]]></content>
+  </entry>
   
 </feed>
