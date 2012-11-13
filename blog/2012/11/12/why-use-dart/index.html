@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>starting to blog with octopress - Shailen's tech blog</title>
+  <title>why use Dart? - Shailen's tech blog</title>
   <meta name="author" content="Shailen Tuli">
 
   
-  <meta name="description" content="I recently started working at Google. I expect to be writing in this space about Dart, HTML5,
-Web Components and whatever else I encounter that might &hellip;">
+  <meta name="description" content="I am mostly a Ruby and Python hacker. I have spent the last few years building web applications.
+This means that I spend a lot of time writing &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +19,7 @@ Web Components and whatever else I encounter that might &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://shailen.github.com/blog/2012/11/12/starting-to-blog-with-octopress/">
+  <link rel="canonical" href="http://shailen.github.com/blog/2012/11/12/why-use-dart/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -68,7 +68,7 @@ Web Components and whatever else I encounter that might &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Starting to Blog With Octopress</h1>
+      <h1 class="entry-title">Why Use Dart?</h1>
     
     
       <p class="meta">
@@ -84,19 +84,62 @@ Web Components and whatever else I encounter that might &hellip;">
   
 
 
-<time datetime="2012-11-12T10:27:00-08:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
+<time datetime="2012-11-12T14:19:00-08:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>I recently started working at Google. I expect to be writing in this space about Dart, HTML5,
-Web Components and whatever else I encounter that might be interesting to anyone else.</p>
+<div class="entry-content"><p>I am mostly a Ruby and Python hacker. I have spent the last few years building web applications.
+This means that I spend a lot of time writing javascript. I <strong><em>really</em></strong> like Javascript: it has a (mostly) coherent OO/functional hybrid syntax
+derived from Self, Scheme and C, is highly expressive, and
+has a rich and rapidly evolving ecosystem of frameworks and libraries.</p>
 
-<p>This blog is created using Octopress, a framework designed for Jekyll, the static blogging engine
-that powers Github Pages. Using Octopress, I can use Markdown, embed code from my filesystem, download and embed gists,
-embed code from jsFiddle, and publish easily via a git push.</p>
+<p><strong>But</strong> Javascript is undeniably quirky (note that not every language has a must-read &#8221;<a href="http://www.amazon.com/JavaScript-Good-Parts-Douglas-Crockford/dp/0596517742/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1352778037&amp;sr=1-1&amp;keywords=crockford">Good Parts</a>&#8221; book ;)), wasn&#8217;t designed with
+the modern web in mind, and despite the proliforation of code organizing practices (using &#8216;classes&#8217;, encapsulating code using the
+module and sandbox patterns, using MVC frameworks like Backbone and Angular, etc.), building large-scale applications with it is hard, almost heroic.
+This need not be the case.</p>
+
+<p>The Dart project is a serious attempt at creating an alternative to writing web
+applications using Javascript. Dart is likely to appeal to those who want to retain the relative ease of current web development, but want a language with more
+structure than what is available to them.</p>
+
+<p>Here are bulletpoints about Dart:</p>
+
+<ul>
+<li>Dart is open source</li>
+<li>it has a familiar syntax and is easy to learn</li>
+<li>it compiles to javascript that can be used in any modern browser</li>
+<li>it can be executed directly using a Chromium-based browser (nicknamed <a href="http://www.dartlang.org/dartium/">Dartium</a>) that includes the Dart virtual machine (VM)</li>
+<li>it can coexist with javascript through the use of the <a href="http://www.dartlang.org/articles/js-dart-interop/">interop library</a></li>
+<li>it runs in the client and the server</li>
+<li>it comes with a lightweight <a href="http://www.dartlang.org/docs/editor/">editor</a> that you can use to write and debug applications</li>
+<li>Dart programs run fast (many of the people who created Chrome&#8217;s V8 are leading the Dart project)</li>
+<li>it offers concurrency through the use of <a href="http://www.dartlang.org/docs/dart-up-and-running/ch03.html#ch03-dartisolate---concurrency-with-isolates">isolates</a></li>
+<li>Dart has an <strong>optional</strong> type system that:
+
+<ul>
+<li>can help you organize your code</li>
+<li>lead to better debug messages in the editor</li>
+<li>can act as documentation</li>
+</ul>
+</li>
+<li>it comes with batteries included:
+
+<ul>
+<li>an <a href="http://www.dartlang.org/docs/dart-up-and-running/ch03.html#ch03-dart-html-using-html5-apis">HTML library</a> for DOM manipulation</li>
+<li>an <a href="http://www.dartlang.org/docs/dart-up-and-running/ch03.html#ch03-dartio---file-and-socket-io-for-command-line-apps">IO library</a></li>
+<li>a <a href="http://api.dartlang.org/docs/bleeding_edge/unittest.html">unittest library</a></li>
+</ul>
+</li>
+<li>it encourages modular code organization through the use of libraries</li>
+<li>it has a packet manager (<a href="http://pub.dartlang.org/">pub</a>) so you can integrate code from across the Dart ecosystem</li>
+</ul>
+
+
+<p>Is Dart going to change how we write web applications? I don&#8217;t know, it is too early to tell: The language just had its M1 (Milestone 1)
+and is still not at the 1.0 stage. But what I see so far is quite encouraging.</p>
 </div>
 
 
@@ -119,7 +162,7 @@ embed code from jsFiddle, and publish easily via a git push.</p>
   
 
 
-<time datetime="2012-11-12T10:27:00-08:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
+<time datetime="2012-11-12T14:19:00-08:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
       
 
 
@@ -127,7 +170,7 @@ embed code from jsFiddle, and publish easily via a git push.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shailen.github.com/blog/2012/11/12/starting-to-blog-with-octopress/" data-via="shailentuli" data-counturl="http://shailen.github.com/blog/2012/11/12/starting-to-blog-with-octopress/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shailen.github.com/blog/2012/11/12/why-use-dart/" data-via="shailentuli" data-counturl="http://shailen.github.com/blog/2012/11/12/why-use-dart/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -138,8 +181,8 @@ embed code from jsFiddle, and publish easily via a git push.</p>
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2012/11/12/starting-to-blog-with-octopress/" title="Previous Post: starting to blog with octopress">&laquo; starting to blog with octopress</a>
       
-        <a class="basic-alignment right" href="/blog/2012/11/12/why-use-dart/" title="Next Post: why use Dart?">why use Dart? &raquo;</a>
       
     </p>
   </footer>
