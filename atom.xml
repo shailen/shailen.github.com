@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Shailen's tech blog]]></title>
+  <title><![CDATA[Shailen Tuli's tech blog]]></title>
   <link href="http://shailen.github.com/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-11-13T10:04:38-08:00</updated>
+  <updated>2012-11-13T10:20:22-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -22,13 +22,12 @@
 excited by the emergence of Dart as a structured web programming language for building applications for the modern web.</p>
 
 <p>I am mostly a Ruby and Python hacker. I have spent the last few years doing web programming and this means that I
-have spent a lot of time writing Javascript. I <strong><em>really</em></strong> like coding in Javascript: I like its (mostly) coherent OO/functional hybrid syntax
-, I find it expressive and I like to make use of its
-rich and rapidly evolving ecosystem of frameworks and libraries.</p>
+have spent a lot of time writing Javascript. I <em>really</em> like coding in Javascript: I like its (mostly) coherent OO/functional
+hybrid syntax, I find it expressive and I like to make use of its rich and rapidly evolving ecosystem of frameworks and libraries.</p>
 
 <p>Javascript started off as small language for animating mostly static web pages. As the
-web has evolved, Javascript code-bases have become larger (my last project, a Rails 3 app using Backbone, had more Javscript than
-Ruby code in it). Large codebases require careful use of code reuse and organization; through the use of &#8216;classes&#8217; and inheritance,
+web has evolved, Javascript code-bases have become larger (my last project, a Rails 3 app using Backbone, had more Javascript than
+Ruby code in it). Large codebases require careful use of code reuse and organization if they are to scale; through the use of &#8216;classes&#8217; and inheritance,
 the module and sandbox design patterns, popular MVC frameworks like Backbone and Angular, Javascript developers have sought to bring
 more structure to their code.</p>
 
@@ -36,8 +35,8 @@ more structure to their code.</p>
 attempt at creating an alternative to writing web applications using Javascript; it is likely to appeal to those who want to
 retain the relative ease of current web development, but want a language with more structure than what is available to them today.
 Building large web applications has been quite daunting - even heroic - and Dart aims to make the development process easier.
-That Dart is a &#8220;batteries included&#8221; project (the language comes with libraries, a packet manager, an editor, and a VM) and Dart code executes fast, make it an
-even more attractive option for modern web development.</p>
+Dart is a &#8220;batteries included&#8221; project (the language comes with libraries, a packet manager, an editor, and a VM) and
+Dart code executes fast, making it an attractive option for modern web development.</p>
 
 <p>Here are a few salient points about Dart:</p>
 
