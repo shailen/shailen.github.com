@@ -145,10 +145,13 @@ String d = Strings.join(["hello", "world!"], ", ");
 String e = Strings.concatAll(["hello", "world"]);
 </code></pre>
 
-<p>All of the above work, but if you need to join a list of strings using a delimiter, your should
+<p>All of the above work, but if you are looking for a <code>+</code> substitute, use adjacent string literals;
+if you need to join a list of strings using a delimiter,
 use <code>Strings.join()</code>. If you plan on building a very long string, the
 <code>StringBuffer</code> class can gather the components quite efficiently and convert them to a string only
-when needed. And if speed is a concern, adjacent string literals are the way to go.</p>
+when needed.</p>
+
+<p>You can also use string interpolation; that will be the subject of my next post.</p>
 </div>
 
 
