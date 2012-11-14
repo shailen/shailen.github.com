@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>starting to blog with octopress - Shailen Tuli's tech blog</title>
+  <title>string concatenation in dart - Shailen Tuli's tech blog</title>
   <meta name="author" content="Shailen Tuli">
 
   
-  <meta name="description" content="I recently started working at Google. I expect to be writing in this space about Dart, HTML5,
-Web Components and whatever else I encounter that might &hellip;">
+  <meta name="description" content="Let us start with a simple helloworld.dart example and use it to see how string concatenation works in Dart. void main() { print("hello, world!");
+} &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +19,7 @@ Web Components and whatever else I encounter that might &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://shailen.github.com/blog/2012/11/12/starting-to-blog-with-octopress/">
+  <link rel="canonical" href="http://shailen.github.com/blog/2012/11/13/string-concatenation-in-dart/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -68,7 +68,7 @@ Web Components and whatever else I encounter that might &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Starting to Blog With Octopress</h1>
+      <h1 class="entry-title">String Concatenation in Dart</h1>
     
     
       <p class="meta">
@@ -84,19 +84,71 @@ Web Components and whatever else I encounter that might &hellip;">
   
 
 
-<time datetime="2012-11-12T10:27:00-08:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
+<time datetime="2012-11-13T17:33:00-08:00" pubdate data-updated="true">Nov 13<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>I recently started working at Google. I expect to be writing in this space about Dart, HTML5,
-Web Components and whatever else I encounter that might be interesting to anyone else.</p>
+<div class="entry-content"><p>Let us start with a simple helloworld.dart example and use it to see how string concatenation works in Dart.</p>
 
-<p>This blog is created using Octopress, a framework designed for Jekyll, the static blogging engine
-that powers Github Pages. Using Octopress, I can use Markdown, embed code from my filesystem, download and embed gists,
-embed code from jsFiddle, and publish easily via a git push.</p>
+<pre><code>void main() {
+  print("hello, world!");
+}
+</code></pre>
+
+<p>The above works, obviously. Now, if we were given this greeting as two strings, &#8220;hello, &#8221; and &#8220;world!&#8221;, and asked
+to join them together, we might be tempted to do:</p>
+
+<pre><code>"hello, " + "world!"
+</code></pre>
+
+<p>This works in lots of languages, but not in Dart. The + operator has not been overloaded in the String class, the above code throws
+a <code>NoSuchMethodError</code>.</p>
+
+<p>Not a problem: Dart gives us lots of ways to contcatenate strings. I list the most common ways
+below. <em>Above the examples you will see some <strong>crude</strong> benchmarks that I calculated by running each example a million
+times on my MacBook. These can give a <strong>general</strong> sense of the relative efficiency of each method</em>.</p>
+
+<p>The easiest, most efficient way to concat strings is by using adjacent string literals:</p>
+
+<pre><code>.041 seconds
+String a = "hello, " "world!";
+</code></pre>
+
+<p>This still works if the adjacent strings are on different lines:</p>
+
+<pre><code>.040 seconds
+String b = "hello, "
+    'world!';
+</code></pre>
+
+<p>Dart also has a <code>StringBuffer</code> class, and this can be used to build up a <code>StringBuffer</code> object
+and convert it to a string by calling <code>toString()</code> on it:</p>
+
+<pre><code>.689 seconds
+var sb = new StringBuffer();
+["hello, ", "world!"].forEach((item) {
+  sb.add(item);
+  });
+String c = sb.toString();
+</code></pre>
+
+<p>The <code>Strings</code> class (notice the plural) gives us 2 methods, <code>join()</code> and <code>concatAll()</code> that
+can also be used. <code>Strings.join()</code> takes a delimiter as a second argument:</p>
+
+<pre><code>.408 seconds
+String d = Strings.join(["hello", "world!"], ", ");
+
+.385 seconds
+String e = Strings.concatAll(["hello", "world"]);
+</code></pre>
+
+<p>All of the above work, but if you need to join a list of strings using a delimiter, your should
+use <code>Strings.join()</code>. If you plan on building a very long string, the
+<code>StringBuffer</code> class can gather the components quite efficiently and convert them to a string only
+when needed. And if speed is a concern, adjacent string literals are the way to go.</p>
 </div>
 
 
@@ -119,7 +171,7 @@ embed code from jsFiddle, and publish easily via a git push.</p>
   
 
 
-<time datetime="2012-11-12T10:27:00-08:00" pubdate data-updated="true">Nov 12<span>th</span>, 2012</time>
+<time datetime="2012-11-13T17:33:00-08:00" pubdate data-updated="true">Nov 13<span>th</span>, 2012</time>
       
 
 
@@ -127,7 +179,7 @@ embed code from jsFiddle, and publish easily via a git push.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shailen.github.com/blog/2012/11/12/starting-to-blog-with-octopress/" data-via="shailentuli" data-counturl="http://shailen.github.com/blog/2012/11/12/starting-to-blog-with-octopress/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shailen.github.com/blog/2012/11/13/string-concatenation-in-dart/" data-via="shailentuli" data-counturl="http://shailen.github.com/blog/2012/11/13/string-concatenation-in-dart/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -138,8 +190,8 @@ embed code from jsFiddle, and publish easily via a git push.</p>
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2012/11/12/why-use-dart/" title="Previous Post: why use Dart?">&laquo; why use Dart?</a>
       
-        <a class="basic-alignment right" href="/blog/2012/11/12/why-use-dart/" title="Next Post: why use Dart?">why use Dart? &raquo;</a>
       
     </p>
   </footer>
