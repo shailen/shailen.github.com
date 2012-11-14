@@ -3,7 +3,7 @@ layout: post
 title: "string concatenation in dart"
 date: 2012-11-13 17:33
 comments: true
-categories: 
+categories: Dart, strings, StringBuffer
 ---
 
 Let us start with a simple helloworld.dart example and use it to see how string concatenation works in Dart.
