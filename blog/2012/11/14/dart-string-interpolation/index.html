@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: StringBuffer - Shailen Tuli's tech blog</title>
+  <title>Dart String Interpolation - Shailen Tuli's tech blog</title>
   <meta name="author" content="Shailen Tuli">
 
   
-  <meta name="description" content="Category: StringBuffer">
+  <meta name="description" content="You can access the value of an expression inside a string by using ${expression}. var greeting = "Hello";
+var person = "Rohan"; print("${greeting &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://shailen.github.comblog/categories/stringbuffer/">
+  <link rel="canonical" href="http://shailen.github.com/blog/2012/11/14/dart-string-interpolation/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -63,35 +64,142 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: StringBuffer</h1>
+    
+      <h1 class="entry-title">Dart String Interpolation</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-14T11:23:00-08:00" pubdate data-updated="true">Nov 14<span>th</span>, 2012</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>You can access the value of an expression inside a string by using <code>${expression}</code>.</p>
 
-  
-  <h2>2012</h2>
+<pre><code>var greeting = "Hello";
+var person = "Rohan";
 
-<article>
-  
-<h1><a href="/blog/2012/11/13/string-concatenation-in-dart/">string concatenation in dart</a></h1>
-<time datetime="2012-11-13T17:33:00-08:00" pubdate><span class='month'>Nov</span> <span class='day'>13</span> <span class='year'>2012</span></time>
+print("${greeting}, ${person}!"); // prints "Hello, Rohan!"
+</code></pre>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/dart/'>Dart</a>, <a class='category' href='/blog/categories/stringbuffer/'>StringBuffer</a>, <a class='category' href='/blog/categories/strings/'>strings</a></span>
-</footer>
+<p>If the expression is an identifier, the <code>{}</code> can be skipped.</p>
 
+<pre><code>print("$greeting, $person");
+</code></pre>
 
-</article>
+<p>If the variable inside the <code>{}</code> isn&#8217;t a string, the variable&#8217;s <code>toString()</code> method is called:</p>
 
+<pre><code>int x = 5;
+print("There are ${x.toString()} people in this room");
+</code></pre>
+
+<p>The call to <code>toString()</code> is unnecessary (although harmless) in this case: <code>toString()</code> is already defined
+for ints and Dart automatically calls <code>toString()</code>. What this does mean, though, is that it is the user&#8217;s
+responsibility to define a <code>toString()</code> method when interpolating user-defined objects.</p>
+
+<p>You can interpolate expressions of arbitrary complexity by placing them inside <code>${}</code>:</p>
+
+<p>A ternary <code>if..else</code>:</p>
+
+<pre><code>int x = 5;
+print("There are ${x &lt; 10 ? "a few" : "many"} people in this room");
+</code></pre>
+
+<p>List and Map operations:</p>
+
+<pre><code>List list = [1, 2, 3, 4, 5];
+print("The list is $list, and when squared it is ${list.map((i) {return i * i;})}");
+// The list is [1, 2, 3, 4, 5], and when squared it is [1, 4, 9, 16, 25]
+
+Map map = {"ca": "California", "pa": "Pennsylvania"};
+print("I live in sunny ${map['ca']}");
+// I live in sunny California
+</code></pre>
+
+<p>Notice above that you can access <code>$list</code>(an identifier) without using <code>{}</code>, but the call to <code>list.map</code>(an expression)
+needs to be inside <code>{}</code>. Similarly, in the example below, <code>$x</code> works, but <code>{}</code> are required for <code>-x</code>:</p>
+
+<pre><code>print("x = $x and -x = ${-x}");
+// x = 5 and -x = -5
+</code></pre>
+
+<p>Expressions inside <code>${}</code> can be arbitrarily complex:</p>
+
+<pre><code>List names = ['John', 'Sophena', 'Henrietta'];
+print("${
+  ((names) {
+      return names[(new math.Random()).nextInt(names.length)];
+  })(names)} is the most valueable member of our team");
+</code></pre>
+
+<p>The code above defines an anonymous function to pick a random name from a list and then calls that function with
+<code>names</code> as an argument. All of this is done as part of string interpolation.</p>
+
+<p>Creating a function and immediately calling it is useful in a lot of situations (it is a common practice in Javascript); doing so as part
+of string interpolation is needlessly clever and should probably be avoided.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Shailen Tuli</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-14T11:23:00-08:00" pubdate data-updated="true">Nov 14<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shailen.github.com/blog/2012/11/14/dart-string-interpolation/" data-via="shailentuli" data-counturl="http://shailen.github.com/blog/2012/11/14/dart-string-interpolation/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/11/13/string-concatenation-in-dart/" title="Previous Post: string concatenation in dart">&laquo; string concatenation in dart</a>
+      
+      
+    </p>
+  </footer>
 </article>
 
 </div>
