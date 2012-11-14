@@ -55,8 +55,11 @@ can also be used. `Strings.join()` takes a delimiter as a second argument:
     .385 seconds
     String e = Strings.concatAll(["hello", "world"]);
 
-All of the above work, but if you need to join a list of strings using a delimiter, your should
+All of the above work, but if you are looking for a `+` substitute, use adjacent string literals; 
+if you need to join a list of strings using a delimiter,
 use `Strings.join()`. If you plan on building a very long string, the 
 `StringBuffer` class can gather the components quite efficiently and convert them to a string only 
-when needed. And if speed is a concern, adjacent string literals are the way to go.
+when needed. 
+
+You can also use string interpolation; that will be the subject of my next post.
 
