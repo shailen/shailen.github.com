@@ -55,5 +55,5 @@ Expressions inside `${}` can be arbitrarily complex:
 The code above defines an anonymous function to pick a random name from a list and then calls that function with 
 `names` as an argument. All of this is done as part of string interpolation.
 
-Creating a function and immediately calling it is useful in a lot of situations (it is a common practice in Javascript); doing so as part
-of string interpolation is needlessly clever and should probably be avoided.
+Creating a function and immediately calling it is useful in a lot of situations (it is a common practice in Javascript); but, watch out: 
+doing this sort of thing can lead to hard to maintain code. An abudance of caution is advised ;) 
