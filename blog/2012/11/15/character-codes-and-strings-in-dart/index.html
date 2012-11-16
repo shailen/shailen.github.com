@@ -5,13 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - Shailen Tuli's tech blog</title>
+  <title>character codes and strings in Dart - Shailen Tuli's tech blog</title>
   <meta name="author" content="Shailen Tuli">
 
   
-  <meta name="description" content="Blog Archive 2012 character codes and strings in Dart
-Nov 15 2012 posted in StringBuffer, charCodeAt, charCodes Dart String Interpolation
-Nov 14 &hellip;">
+  <meta name="description" content="In my Python programs, I found frequent use for the ord() and chr() builtins. ord() takes a character as an argument
+and returns its ASCII value; chr &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +19,7 @@ Nov 14 &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://shailen.github.com/blog/archives/">
+  <link rel="canonical" href="http://shailen.github.com/blog/2012/11/15/character-codes-and-strings-in-dart/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -65,79 +64,182 @@ Nov 14 &hellip;">
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Blog Archive</h1>
+    
+      <h1 class="entry-title">Character Codes and Strings in Dart</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-15T15:29:00-08:00" pubdate data-updated="true">Nov 15<span>th</span>, 2012</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives">
 
 
+<div class="entry-content"><p>In my Python programs, I found frequent use for the <code>ord()</code> and <code>chr()</code> builtins. <code>ord()</code> takes a character as an argument
+and returns its ASCII value; <code>chr()</code> takes an ASCII value as an argument and returns the corresponding string character (these
+are rough descriptions; you can read more about these builtins <a href="" title="http://docs.python.org/2/library/functions.html#ord">here</a>).</p>
 
-  
-  <h2>2012</h2>
+<p>Similar tools exist in Dart. To get a list of character codes for a string, use <code>charCodes</code>:</p>
 
-<article>
-  
-<h1><a href="/blog/2012/11/15/character-codes-and-strings-in-dart/">character codes and strings in Dart</a></h1>
-<time datetime="2012-11-15T15:29:00-08:00" pubdate><span class='month'>Nov</span> <span class='day'>15</span> <span class='year'>2012</span></time>
+<pre><code>String s = "hello";
+print(s.charCodes);
+// prints [104, 101, 108, 108, 111]
+</code></pre>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/stringbuffer/'>StringBuffer</a>, <a class='category' href='/blog/categories/charcodeat/'>charCodeAt</a>, <a class='category' href='/blog/categories/charcodes/'>charCodes</a></span>
-</footer>
+<p>To get a specific character code, you can either subscript <code>charCodes</code>:</p>
 
+<pre><code>print(s.charCodes[0]); 
+</code></pre>
 
-</article>
+<p>or - this is the more common way - use <code>charCodeAt</code>:</p>
 
+<pre><code>print(s.charCodeAt(0));
+</code></pre>
 
+<p>To assemble a string from a list of character codes, use the <code>String</code> factory, <code>fromCharCodes</code>:</p>
 
-<article>
-  
-<h1><a href="/blog/2012/11/14/dart-string-interpolation/">Dart String Interpolation</a></h1>
-<time datetime="2012-11-14T11:23:00-08:00" pubdate><span class='month'>Nov</span> <span class='day'>14</span> <span class='year'>2012</span></time>
+<pre><code>List&lt;int&gt; charCodes = [104, 101, 108, 108, 111];
+print(new String.fromCharCodes(charCodes));
+// "hello"
+</code></pre>
 
+<p>If you are using a StringBuffer to build up a string, you can add individual charCodes using <code>addCharCode</code>.
+(use <code>add()</code> to add characters; use <code>addCharCode()</code> to add charCodes):</p>
 
-</article>
+<pre><code>StringBuffer sb = new StringBuffer();
+charCodes.forEach((charCode) {
+  sb.addCharCode(charCode);
+});
 
+print(sb.toString());
+// "Hello" 
+</code></pre>
 
+<p>Here is an implementation of the <code>rot13</code> algorithm, using the tools described above. <code>rot13</code>
+is a simple letter substitution algorithm that rotates a string by 13 places by replacing each
+character in it by one that is 13 characters removed (&#8216;a&#8217; becomes &#8216;n&#8217;, &#8216;N&#8217; becomes &#8216;A&#8217;, etc.):</p>
 
-<article>
-  
-<h1><a href="/blog/2012/11/13/string-concatenation-in-dart/">string concatenation in dart</a></h1>
-<time datetime="2012-11-13T17:33:00-08:00" pubdate><span class='month'>Nov</span> <span class='day'>13</span> <span class='year'>2012</span></time>
+<pre><code>String rot13(String s) {
+  List&lt;int&gt; rotated = [];
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/dart/'>Dart</a>, <a class='category' href='/blog/categories/stringbuffer/'>StringBuffer</a>, <a class='category' href='/blog/categories/strings/'>strings</a></span>
-</footer>
+  s.charCodes.forEach((charCode) {
+    final int A = 65;
+    final int a = 97;
 
+    if ([A, a].some((item){
+      return item &lt;= charCode &amp;&amp; charCode &lt; item + 13;
+      })) {
+      rotated.add(charCode + 13);
+    } else {
+      rotated.add(charCode - 13);
+    }
+  });
 
-</article>
+  return (new String.fromCharCodes(rotated));
+}
+</code></pre>
 
+<p>and here is the same code using a <code>StringBuffer</code>:</p>
 
+<pre><code>String rot13(String s) {
+  StringBuffer sb = new StringBuffer();
 
-<article>
-  
-<h1><a href="/blog/2012/11/12/why-use-dart/">why use Dart?</a></h1>
-<time datetime="2012-11-12T14:19:00-08:00" pubdate><span class='month'>Nov</span> <span class='day'>12</span> <span class='year'>2012</span></time>
+  s.charCodes.forEach((charCode) {
+    final int A = 65;
+    final int a = 97;
 
+    if ([A, a].some((item){
+      return item &lt;= charCode &amp;&amp; charCode &lt; item + 13;
+      })) {
+      sb.addCharCode(charCode + 13);
+    } else {
+      sb.addCharCode(charCode - 13);
+    }
+  });
+  return sb.toString();
+}
+</code></pre>
 
-</article>
+<p>Running the code:</p>
 
-
-
-<article>
-  
-<h1><a href="/blog/2012/11/12/starting-to-blog-with-octopress/">starting to blog with octopress</a></h1>
-<time datetime="2012-11-12T10:27:00-08:00" pubdate><span class='month'>Nov</span> <span class='day'>12</span> <span class='year'>2012</span></time>
-
-
-</article>
-
+<pre><code>var words_list = [["Jung", "be", "purely", "barf"],
+                  ["aha", "nun"]];
+words_list.forEach((word_list) {
+  print(word_list.map((word) {
+    return rot13(word);
+  }));
+});
+// [What, or, cheryl, ones]
+// [nun, aha] 
+</code></pre>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Shailen Tuli</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-15T15:29:00-08:00" pubdate data-updated="true">Nov 15<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/stringbuffer/'>StringBuffer</a>, <a class='category' href='/blog/categories/charcodeat/'>charCodeAt</a>, <a class='category' href='/blog/categories/charcodes/'>charCodes</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shailen.github.com/blog/2012/11/15/character-codes-and-strings-in-dart/" data-via="shailentuli" data-counturl="http://shailen.github.com/blog/2012/11/15/character-codes-and-strings-in-dart/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/11/14/dart-string-interpolation/" title="Previous Post: Dart String Interpolation">&laquo; Dart String Interpolation</a>
+      
+      
+    </p>
+  </footer>
 </article>
 
 </div>
