@@ -6,14 +6,14 @@ comments: true
 categories: [charCodes, charCodeAt, StringBuffer]
 ---
 
-In my Python programs, I found frequent use for the `ord()` and `chr()` builtins. `ord()` takes a character as an argument
+In my Python programs, I found use for the `ord()` and `chr()` builtins. `ord()` takes a character as an argument
 and returns its ASCII value; `chr()` takes an ASCII value as an argument and returns the corresponding string character (these
 are rough descriptions; you can read more about these builtins [here]("http://docs.python.org/2/library/functions.html#ord")).
 
 Similar tools exist in Dart. To get a list of character codes for a string, use `charCodes`:
     String s = "hello";
     print(s.charCodes);
-    // prints [104, 101, 108, 108, 111]
+    // [104, 101, 108, 108, 111]
   
 To get a specific character code, you can either subscript `charCodes`:
     print(s.charCodes[0]); 
@@ -27,7 +27,7 @@ To assemble a string from a list of character codes, use the `String` factory, `
     // "hello"
 
   
-If you are using a StringBuffer to build up a string, you can add individual charCodes using `addCharCode`.
+If you are using a StringBuffer to build up a string, you can add individual charCodes using `addCharCode`
 (use `add()` to add characters; use `addCharCode()` to add charCodes):
 
     StringBuffer sb = new StringBuffer();
@@ -92,5 +92,5 @@ Running the code:
         return rot13(word);
       }));
     });
-    // [What, or, cheryl, ones]
-    // [nun, aha] 
+    // ["What", "or", "cheryl", "ones"]
+    // ["nun", "aha"] 
