@@ -4,7 +4,7 @@
   <title><![CDATA[Shailen Tuli's tech blog]]></title>
   <link href="http://shailen.github.com/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-11-15T17:33:40-08:00</updated>
+  <updated>2012-11-16T09:30:22-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -18,7 +18,7 @@
     <link href="http://shailen.github.com/blog/2012/11/15/character-codes-and-strings-in-dart/"/>
     <updated>2012-11-15T15:29:00-08:00</updated>
     <id>http://shailen.github.com/blog/2012/11/15/character-codes-and-strings-in-dart</id>
-    <content type="html"><![CDATA[<p>In my Python programs, I found frequent use for the <code>ord()</code> and <code>chr()</code> builtins. <code>ord()</code> takes a character as an argument
+    <content type="html"><![CDATA[<p>In my Python programs, I found use for the <code>ord()</code> and <code>chr()</code> builtins. <code>ord()</code> takes a character as an argument
 and returns its ASCII value; <code>chr()</code> takes an ASCII value as an argument and returns the corresponding string character (these
 are rough descriptions; you can read more about these builtins <a href="" title="http://docs.python.org/2/library/functions.html#ord">here</a>).</p>
 
@@ -26,7 +26,7 @@ are rough descriptions; you can read more about these builtins <a href="" title=
 
 <pre><code>String s = "hello";
 print(s.charCodes);
-// prints [104, 101, 108, 108, 111]
+// [104, 101, 108, 108, 111]
 </code></pre>
 
 <p>To get a specific character code, you can either subscript <code>charCodes</code>:</p>
@@ -46,7 +46,7 @@ print(new String.fromCharCodes(charCodes));
 // "hello"
 </code></pre>
 
-<p>If you are using a StringBuffer to build up a string, you can add individual charCodes using <code>addCharCode</code>.
+<p>If you are using a StringBuffer to build up a string, you can add individual charCodes using <code>addCharCode</code>
 (use <code>add()</code> to add characters; use <code>addCharCode()</code> to add charCodes):</p>
 
 <pre><code>StringBuffer sb = new StringBuffer();
@@ -112,8 +112,8 @@ words_list.forEach((word_list) {
     return rot13(word);
   }));
 });
-// [What, or, cheryl, ones]
-// [nun, aha] 
+// ["What", "or", "cheryl", "ones"]
+// ["nun", "aha"] 
 </code></pre>
 ]]></content>
   </entry>

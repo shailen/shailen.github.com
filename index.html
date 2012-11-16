@@ -9,8 +9,8 @@
   <meta name="author" content="Shailen Tuli">
 
   
-  <meta name="description" content="In my Python programs, I found frequent use for the ord() and chr() builtins. ord() takes a character as an argument
-and returns its ASCII value; chr &hellip;">
+  <meta name="description" content="In my Python programs, I found use for the ord() and chr() builtins. ord() takes a character as an argument
+and returns its ASCII value; chr() takes &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -94,7 +94,7 @@ and returns its ASCII value; chr &hellip;">
   </header>
 
 
-  <div class="entry-content"><p>In my Python programs, I found frequent use for the <code>ord()</code> and <code>chr()</code> builtins. <code>ord()</code> takes a character as an argument
+  <div class="entry-content"><p>In my Python programs, I found use for the <code>ord()</code> and <code>chr()</code> builtins. <code>ord()</code> takes a character as an argument
 and returns its ASCII value; <code>chr()</code> takes an ASCII value as an argument and returns the corresponding string character (these
 are rough descriptions; you can read more about these builtins <a href="" title="http://docs.python.org/2/library/functions.html#ord">here</a>).</p>
 
@@ -102,7 +102,7 @@ are rough descriptions; you can read more about these builtins <a href="" title=
 
 <pre><code>String s = "hello";
 print(s.charCodes);
-// prints [104, 101, 108, 108, 111]
+// [104, 101, 108, 108, 111]
 </code></pre>
 
 <p>To get a specific character code, you can either subscript <code>charCodes</code>:</p>
@@ -122,7 +122,7 @@ print(new String.fromCharCodes(charCodes));
 // "hello"
 </code></pre>
 
-<p>If you are using a StringBuffer to build up a string, you can add individual charCodes using <code>addCharCode</code>.
+<p>If you are using a StringBuffer to build up a string, you can add individual charCodes using <code>addCharCode</code>
 (use <code>add()</code> to add characters; use <code>addCharCode()</code> to add charCodes):</p>
 
 <pre><code>StringBuffer sb = new StringBuffer();
@@ -188,8 +188,8 @@ words_list.forEach((word_list) {
     return rot13(word);
   }));
 });
-// [What, or, cheryl, ones]
-// [nun, aha] 
+// ["What", "or", "cheryl", "ones"]
+// ["nun", "aha"] 
 </code></pre>
 </div>
   
