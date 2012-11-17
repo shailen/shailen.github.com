@@ -4,7 +4,7 @@
   <title><![CDATA[Shailen Tuli's tech blog]]></title>
   <link href="http://shailen.github.com/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-11-16T09:30:22-08:00</updated>
+  <updated>2012-11-17T10:18:33-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -14,15 +14,21 @@
 
   
   <entry>
+    <title type="html"><![CDATA[booleans in dart]]></title>
+    <link href="http://shailen.github.com/blog/2012/11/16/booleans-in-dart/"/>
+    <updated>2012-11-16T18:32:00-08:00</updated>
+    <id>http://shailen.github.com/blog/2012/11/16/booleans-in-dart</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[character codes and strings in Dart]]></title>
     <link href="http://shailen.github.com/blog/2012/11/15/character-codes-and-strings-in-dart/"/>
     <updated>2012-11-15T15:29:00-08:00</updated>
     <id>http://shailen.github.com/blog/2012/11/15/character-codes-and-strings-in-dart</id>
-    <content type="html"><![CDATA[<p>In my Python programs, I found use for the <code>ord()</code> and <code>chr()</code> builtins. <code>ord()</code> takes a character as an argument
-and returns its ASCII value; <code>chr()</code> takes an ASCII value as an argument and returns the corresponding string character (these
-are rough descriptions; you can read more about these builtins <a href="" title="http://docs.python.org/2/library/functions.html#ord">here</a>).</p>
-
-<p>Similar tools exist in Dart. To get a list of character codes for a string, use <code>charCodes</code>:</p>
+    <content type="html"><![CDATA[<p>In my Python programs, I found use for the <code>ord()</code> and <code>chr()</code> builtins. <code>ord()</code> to convert between string characters and their
+ASCII representations. Similar tools exist in Dart. To get a list of character codes for a string, use <code>charCodes</code>:</p>
 
 <pre><code>String s = "hello";
 print(s.charCodes);
