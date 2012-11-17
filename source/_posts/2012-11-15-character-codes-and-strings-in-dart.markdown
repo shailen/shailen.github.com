@@ -6,7 +6,7 @@ comments: true
 categories: [charCodes, charCodeAt, StringBuffer]
 ---
 
-In my Python programs, I found use for the `ord()` and `chr()` builtins. `ord()` to convert between string characters and their
+In my Python programs, I found use for the `ord()` and `chr()` builtins to convert between string characters and their
 ASCII representations. Similar tools exist in Dart. To get a list of character codes for a string, use `charCodes`:
     String s = "hello";
     print(s.charCodes);
