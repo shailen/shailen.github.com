@@ -4,7 +4,7 @@
   <title><![CDATA[Category: StringBuffer | Shailen Tuli's tech blog]]></title>
   <link href="http://shailen.github.com/blog/categories/stringbuffer/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-11-17T10:18:33-08:00</updated>
+  <updated>2012-11-17T10:21:49-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -18,7 +18,7 @@
     <link href="http://shailen.github.com/blog/2012/11/15/character-codes-and-strings-in-dart/"/>
     <updated>2012-11-15T15:29:00-08:00</updated>
     <id>http://shailen.github.com/blog/2012/11/15/character-codes-and-strings-in-dart</id>
-    <content type="html"><![CDATA[<p>In my Python programs, I found use for the <code>ord()</code> and <code>chr()</code> builtins. <code>ord()</code> to convert between string characters and their
+    <content type="html"><![CDATA[<p>In my Python programs, I found use for the <code>ord()</code> and <code>chr()</code> builtins to convert between string characters and their
 ASCII representations. Similar tools exist in Dart. To get a list of character codes for a string, use <code>charCodes</code>:</p>
 
 <pre><code>String s = "hello";
