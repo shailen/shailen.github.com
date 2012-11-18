@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: StringBuffer - Shailen Tuli's tech blog</title>
+  <title>using boolean expressions for assignment in Dart - Shailen Tuli's tech blog</title>
   <meta name="author" content="Shailen Tuli">
 
   
-  <meta name="description" content="Category: StringBuffer">
+  <meta name="description" content="I often do this in Javascript: var Point = function(options) { options = options || {}; this.x = options['x'] || 0; this.y = options['y'] || 0;
+} in &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://shailen.github.comblog/categories/stringbuffer/">
+  <link rel="canonical" href="http://shailen.github.com/blog/2012/11/17/using-boolean-expressions-for-assignment-in-dart/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -63,50 +64,162 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: StringBuffer</h1>
+    
+      <h1 class="entry-title">Using Boolean Expressions for Assignment in Dart</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-17T21:52:00-08:00" pubdate data-updated="true">Nov 17<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>I often do this in Javascript:</p>
 
-  
-  <h2>2012</h2>
+<pre><code>var Point = function(options) {
+  options = options || {};
+  this.x = options['x'] || 0;
+  this.y = options['y'] || 0;
+}
+</code></pre>
 
-<article>
-  
-<h1><a href="/blog/2012/11/15/character-codes-and-strings-in-dart/">character codes and strings in Dart</a></h1>
-<time datetime="2012-11-15T15:29:00-08:00" pubdate><span class='month'>Nov</span> <span class='day'>15</span> <span class='year'>2012</span></time>
+<p>in Ruby, I do this:</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/stringbuffer/'>StringBuffer</a>, <a class='category' href='/blog/categories/charcodeat/'>charCodeAt</a>, <a class='category' href='/blog/categories/charcodes/'>charCodes</a></span>
-</footer>
+<pre><code>age ||= 16; // if age is `nil` or `false`, assign it a value of 16
+</code></pre>
 
+<p>or, this:</p>
 
-</article>
+<pre><code>a, b, c = 1, 2, 3
+d = a &amp;&amp; b &amp;&amp; c
+// d will equal 3
+</code></pre>
 
+<p>In these cases, the boolean expressions return the value of the last evaluation. So, how should this be done
+in Dart? Consider this code:</p>
 
+<pre><code>var x;
+var y = x || 10;
+</code></pre>
 
-<article>
-  
-<h1><a href="/blog/2012/11/13/string-concatenation-in-dart/">string concatenation in dart</a></h1>
-<time datetime="2012-11-13T17:33:00-08:00" pubdate><span class='month'>Nov</span> <span class='day'>13</span> <span class='year'>2012</span></time>
+<p>In checked mode, this generates an exception (more on that in a moment). What do you think happens in unchecked mode?  What
+is the value of <code>y</code>?</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/dart/'>Dart</a>, <a class='category' href='/blog/categories/stringbuffer/'>StringBuffer</a>, <a class='category' href='/blog/categories/strings/'>strings</a></span>
-</footer>
+<p>At first glance, the code looks reasonable, but the answer is <em>really</em> problematic. Based on other languages I have used, I would expect <code>y</code> to equal <code>10</code>.
+In Dart, this does not happen. <code>y</code> actually gets assigned a value of <code>false</code>. Since 10 is not explicitly <code>true</code>, it evaluates to
+<code>false</code>. This is exactly what Dart is supposed to do. See my <a href="http://shailen.github.com/blog/2012/11/16/booleans-in-dart/">post</a> from yesterday it this isn&#8217;t clear.</p>
 
+<p>Now, in checked mode (you are using checked mode, right?), <code>y</code> doesn&#8217;t get a value at all because we get an error:</p>
 
-</article>
+<pre><code>Unhandled exception:
+type 'Null' is not a subtype of type 'bool' of 'boolean expression'.
+</code></pre>
 
+<p>This is Dart&#8217;s way of telling us that it is not going to do implicit boolean conversion for us when using <code>||</code> and it expects to see a boolean where it
+now sees a <code>null</code> (<code>x</code> is null).  Changing the code to:</p>
+
+<pre><code>var y = 5 || 10;
+</code></pre>
+
+<p>we get a slightly different error message:</p>
+
+<pre><code>Unhandled exception:
+type 'int' is not a subtype of type 'bool' of 'boolean expression'.
+</code></pre>
+
+<p>No good. Dart wants booleans around the <code>||</code>. Something like this works fine:
+   int x = 10;
+   bool y = x % 3 == 1 || x % 5 == 2;
+   // y is true</p>
+
+<p>So, how do we correctly handle assignment based on boolean evaluation? We do an explicit test and not rely on <code>||</code> or <code>&amp;&amp;</code> to implicitly
+handle this for:</p>
+
+<pre><code>int x; // x is null
+int y = x == null ? 0 : x;
+// y now has a value of 0
+</code></pre>
+
+<p>The lessons of all this? <strong>Use checked mode</strong>. Don&#8217;t rely on Dart&#8217;s boolean expressions to magically return boolean values; if such values
+are needed, obtain them directly yourself. Its much clearer to be explicit.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Shailen Tuli</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-17T21:52:00-08:00" pubdate data-updated="true">Nov 17<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/dart/'>Dart</a>, <a class='category' href='/blog/categories/assignment/'>assignment</a>, <a class='category' href='/blog/categories/booleans/'>booleans</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shailen.github.com/blog/2012/11/17/using-boolean-expressions-for-assignment-in-dart/" data-via="shailentuli" data-counturl="http://shailen.github.com/blog/2012/11/17/using-boolean-expressions-for-assignment-in-dart/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/11/16/booleans-in-dart/" title="Previous Post: booleans in dart">&laquo; booleans in dart</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -207,7 +320,10 @@
       var disqus_shortname = 'shailentuliblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://shailen.github.com/blog/2012/11/17/using-boolean-expressions-for-assignment-in-dart/';
+        var disqus_url = 'http://shailen.github.com/blog/2012/11/17/using-boolean-expressions-for-assignment-in-dart/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
