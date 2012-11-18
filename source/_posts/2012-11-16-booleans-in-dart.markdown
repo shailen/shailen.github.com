@@ -55,7 +55,7 @@ Dart actually goes beyond
 Ruby in this regard and _really_ simplifies things:  `false` (and boolean expressions that return `false`) are false; 
 `true` (and boolean expressions that return `true`) are true. _**Everything else is neither false nor true**_.
 
-So, as a programmer, how should you handle the reality that the Dart's boolean symantics change based on whether you 
+So, as a programmer, how should you handle the reality that the Dart's boolean semantics change based on whether you 
 are in checked or unchecked mode?  My recommendation: always code in checked mode and be quite explicit about boolean 
 expressions.
 
