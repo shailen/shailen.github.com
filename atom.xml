@@ -4,7 +4,7 @@
   <title><![CDATA[Shailen Tuli's tech blog]]></title>
   <link href="http://shailen.github.com/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-11-17T23:03:17-08:00</updated>
+  <updated>2012-11-17T23:07:27-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -71,10 +71,12 @@ now sees a <code>null</code> (<code>x</code> is null).  Changing the code to:</p
 type 'int' is not a subtype of type 'bool' of 'boolean expression'.
 </code></pre>
 
-<p>No good. Dart wants booleans around the <code>||</code>. Something like this works fine:
-   int x = 10;
-   bool y = x % 3 == 1 || x % 5 == 2;
-   // y is true</p>
+<p>No good. Dart wants booleans around the <code>||</code>. Something like this works fine:</p>
+
+<pre><code>int x = 10;
+bool y = x % 3 == 1 || x % 5 == 2;
+// y is true
+</code></pre>
 
 <p>So, how do we correctly handle assignment based on boolean evaluation? We do an explicit test and not rely on <code>||</code> or <code>&amp;&amp;</code> to implicitly
 handle this for:</p>
