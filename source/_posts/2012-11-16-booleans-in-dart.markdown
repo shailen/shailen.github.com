@@ -14,13 +14,13 @@ We've all written code that looks something like this:
     }
 
 In Javascript, the `if (x)` would evaluate to false if `x` was `false`, `null`, `undefined`, the number `0` (or `0.0`), 
-an `''` or `NaN` (these are all falsy in Javascript); otherwise it would evaluate to true.  
+an `''` or `NaN` (these are all falsey in Javascript); otherwise it would evaluate to true.  
 
 If this code were rewritten in Python, the `if (x)` would evaluate to false if `x` was `None`, `false`, zero (`0`, 
 `0.0`, `0L`, etc.), an empty string (`''`), list (`[]`), tuple (`()`) or dict(`{}`); 
 otherwise it would evaluate to true.
   
-So, what are the truthy and falsy lists for Dart? To answer that, let's look at what the
+So, what are the truthy and falsey lists for Dart? To answer that, let's look at what the
 language spec says about booleans:
   
     Boolean conversion maps any object o into a boolean. Boolean conversion is defined  by the function
@@ -33,7 +33,7 @@ In other words, anything that is not explicitly `true`, is `false` in Dart. So, 
 `true` if and only if `x` equalled the the boolean literal `true` (or an expression that evaluated to `true` (`3 % 2 == 1`, say)),;
 otherwise it would evaluate to false.
 
-This is very simple. There are no truthy/falsy lists to memorize; it is all very clear, quite correct and ....
+This is very simple. There are no truthy/falsey lists to memorize; it is all very clear, quite correct and ....
 
 likely to get you quickly into trouble. Wait, what? 
 
@@ -45,10 +45,10 @@ look at that function from the language spec again:
     
     }
 
-in checked mode, v **must be a bool**. If it isn't, the Dart editor will complain and throw an exception. We will never
-get to the stage of figuring out whether our `if (x)` evaluates to true or false. 
+**In checked mode, v _must be a bool_. If it isn't, the Dart editor will complain and throw an exception. We will never
+get to the stage of figuring out whether our `if (x)` evaluates to true or false.** 
 
-Going back to other languages for a moment: I always felt that Javascript and Python had too many falsy values. I liked
+Going back to other languages for a moment: I always felt that Javascript and Python had too many falsey values. I liked
 that in Ruby, only `false` and `nil` evaluated to false; everything else was true. So, instead of writing `if myList ...`, you
 would write `if myList.empty? ..` in Ruby, making your intent quite clear. 
 Dart actually goes beyond
