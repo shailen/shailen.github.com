@@ -4,7 +4,7 @@
   <title><![CDATA[Category: booleans | Shailen Tuli's tech blog]]></title>
   <link href="http://shailen.github.com/blog/categories/booleans/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-11-17T23:11:52-08:00</updated>
+  <updated>2012-11-17T23:20:31-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -149,7 +149,7 @@ Dart actually goes beyond
 Ruby in this regard and <em>really</em> simplifies things:  <code>false</code> (and boolean expressions that return <code>false</code>) are false;
 <code>true</code> (and boolean expressions that return <code>true</code>) are true. <em><strong>Everything else is neither false nor true</strong></em>.</p>
 
-<p>So, as a programmer, how should you handle the reality that the Dart's boolean symantics change based on whether you
+<p>So, as a programmer, how should you handle the reality that the Dart's boolean semantics change based on whether you
 are in checked or unchecked mode?  My recommendation: always code in checked mode and be quite explicit about boolean
 expressions.</p>
 
