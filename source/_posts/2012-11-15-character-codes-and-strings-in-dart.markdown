@@ -40,54 +40,48 @@ Here is an implementation of the `rot13` algorithm, using the tools described ab
 is a simple letter substitution algorithm that rotates a string by 13 places by replacing each
 character in it by one that is 13 characters removed ('a' becomes 'n', 'N' becomes 'A', etc.):
 
+
     String rot13(String s) {
       List<int> rotated = [];
-      
+    
       s.charCodes.forEach((charCode) {
+        final int numLetters = 26;
         final int A = 65;
         final int a = 97;
+        final int Z = A + numLetters;
+        final int z = a + numLetters;
         
-        if ([A, a].some((item){
-          return item <= charCode && charCode < item + 13;
+        if (charCode < A ||
+            charCode > z ||
+            charCode > Z && charCode < a) {
+          rotated.add(charCode);
+        }
+        else {
+          if ([A, a].some((item){
+            return item <= charCode && charCode < item + 13;
           })) {
-          rotated.add(charCode + 13);
-        } else {
-          rotated.add(charCode - 13);
+            rotated.add(charCode + 13);
+          } else {
+            rotated.add(charCode - 13);
+          }   
         }
       });
-      
+    
       return (new String.fromCharCodes(rotated));
     }
 
-and here is the same code using a `StringBuffer`:
-
-    String rot13(String s) {
-      StringBuffer sb = new StringBuffer();
-      
-      s.charCodes.forEach((charCode) {
-        final int A = 65;
-        final int a = 97;
-        
-        if ([A, a].some((item){
-          return item <= charCode && charCode < item + 13;
-          })) {
-          sb.addCharCode(charCode + 13);
-        } else {
-          sb.addCharCode(charCode - 13);
-        }
-      });
-      return sb.toString();
-    }
-
-   
 Running the code:
  
-    var words_list = [["Jung", "be", "purely", "barf"],
+    var wordsList = [["Jung", "be", "purely", "barf"],
                       ["aha", "nun"]];
-    words_list.forEach((word_list) {
+    wordsList.forEach((word_list) {
       print(word_list.map((word) {
         return rot13(word);
       }));
     });
     // ["What", "or", "cheryl", "ones"]
     // ["nun", "aha"] 
+
+and:
+    String str = "aMz###AmZ";
+    assert(rot13(rot13(str)) == str);
