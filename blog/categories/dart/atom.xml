@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Dart | Shailen Tuli's tech blog]]></title>
   <link href="http://shailen.github.com/blog/categories/dart/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-11-17T23:07:27-08:00</updated>
+  <updated>2012-11-17T23:11:52-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -106,13 +106,13 @@ are needed, obtain them directly yourself. Its much clearer to be explicit.</p>
 </code></pre>
 
 <p>In Javascript, the <code>if (x)</code> would evaluate to false if <code>x</code> was <code>false</code>, <code>null</code>, <code>undefined</code>, the number <code>0</code> (or <code>0.0</code>),
-an <code>''</code> or <code>NaN</code> (these are all falsy in Javascript); otherwise it would evaluate to true.</p>
+an <code>''</code> or <code>NaN</code> (these are all falsey in Javascript); otherwise it would evaluate to true.</p>
 
 <p>If this code were rewritten in Python, the <code>if (x)</code> would evaluate to false if <code>x</code> was <code>None</code>, <code>false</code>, zero (<code>0</code>,
 <code>0.0</code>, <code>0L</code>, etc.), an empty string (<code>''</code>), list (<code>[]</code>), tuple (<code>()</code>) or dict(<code>{}</code>);
 otherwise it would evaluate to true.</p>
 
-<p>So, what are the truthy and falsy lists for Dart? To answer that, let's look at what the
+<p>So, what are the truthy and falsey lists for Dart? To answer that, let's look at what the
 language spec says about booleans:</p>
 
 <pre><code>Boolean conversion maps any object o into a boolean. Boolean conversion is defined  by the function
@@ -126,7 +126,7 @@ language spec says about booleans:</p>
 <code>true</code> if and only if <code>x</code> equalled the the boolean literal <code>true</code> (or an expression that evaluated to <code>true</code> (<code>3 % 2 == 1</code>, say)),;
 otherwise it would evaluate to false.</p>
 
-<p>This is very simple. There are no truthy/falsy lists to memorize; it is all very clear, quite correct and ....</p>
+<p>This is very simple. There are no truthy/falsey lists to memorize; it is all very clear, quite correct and ....</p>
 
 <p>likely to get you quickly into trouble. Wait, what?</p>
 
@@ -139,10 +139,10 @@ look at that function from the language spec again:</p>
 }
 </code></pre>
 
-<p>in checked mode, v <strong>must be a bool</strong>. If it isn't, the Dart editor will complain and throw an exception. We will never
-get to the stage of figuring out whether our <code>if (x)</code> evaluates to true or false.</p>
+<p><strong>In checked mode, v <em>must be a bool</em>. If it isn't, the Dart editor will complain and throw an exception. We will never
+get to the stage of figuring out whether our <code>if (x)</code> evaluates to true or false.</strong></p>
 
-<p>Going back to other languages for a moment: I always felt that Javascript and Python had too many falsy values. I liked
+<p>Going back to other languages for a moment: I always felt that Javascript and Python had too many falsey values. I liked
 that in Ruby, only <code>false</code> and <code>nil</code> evaluated to false; everything else was true. So, instead of writing <code>if myList ...</code>, you
 would write <code>if myList.empty? ..</code> in Ruby, making your intent quite clear.
 Dart actually goes beyond
