@@ -138,15 +138,25 @@ character in it by one that is 13 characters removed (&#8216;a&#8217; becomes &#
   List&lt;int&gt; rotated = [];
 
   s.charCodes.forEach((charCode) {
+    final int numLetters = 26;
     final int A = 65;
     final int a = 97;
+    final int Z = A + numLetters;
+    final int z = a + numLetters;
 
-    if ([A, a].some((item){
-      return item &lt;= charCode &amp;&amp; charCode &lt; item + 13;
+    if (charCode &lt; A ||
+        charCode &gt; z ||
+        charCode &gt; Z &amp;&amp; charCode &lt; a) {
+      rotated.add(charCode);
+    }
+    else {
+      if ([A, a].some((item){
+        return item &lt;= charCode &amp;&amp; charCode &lt; item + 13;
       })) {
-      rotated.add(charCode + 13);
-    } else {
-      rotated.add(charCode - 13);
+        rotated.add(charCode + 13);
+      } else {
+        rotated.add(charCode - 13);
+      }   
     }
   });
 
@@ -154,38 +164,23 @@ character in it by one that is 13 characters removed (&#8216;a&#8217; becomes &#
 }
 </code></pre>
 
-<p>and here is the same code using a <code>StringBuffer</code>:</p>
-
-<pre><code>String rot13(String s) {
-  StringBuffer sb = new StringBuffer();
-
-  s.charCodes.forEach((charCode) {
-    final int A = 65;
-    final int a = 97;
-
-    if ([A, a].some((item){
-      return item &lt;= charCode &amp;&amp; charCode &lt; item + 13;
-      })) {
-      sb.addCharCode(charCode + 13);
-    } else {
-      sb.addCharCode(charCode - 13);
-    }
-  });
-  return sb.toString();
-}
-</code></pre>
-
 <p>Running the code:</p>
 
-<pre><code>var words_list = [["Jung", "be", "purely", "barf"],
+<pre><code>var wordsList = [["Jung", "be", "purely", "barf"],
                   ["aha", "nun"]];
-words_list.forEach((word_list) {
+wordsList.forEach((word_list) {
   print(word_list.map((word) {
     return rot13(word);
   }));
 });
 // ["What", "or", "cheryl", "ones"]
 // ["nun", "aha"] 
+</code></pre>
+
+<p>and:</p>
+
+<pre><code>String str = "aMz###AmZ";
+assert(rot13(rot13(str)) == str);
 </code></pre>
 </div>
 
