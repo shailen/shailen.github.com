@@ -51,9 +51,9 @@ we get a slightly different error message:
     type 'int' is not a subtype of type 'bool' of 'boolean expression'.
 
 No good. Dart wants booleans around the `||`. Something like this works fine:
-   int x = 10;
-   bool y = x % 3 == 1 || x % 5 == 2;
-   // y is true
+    int x = 10;
+    bool y = x % 3 == 1 || x % 5 == 2;
+    // y is true
 
 So, how do we correctly handle assignment based on boolean evaluation? We do an explicit test and not rely on `||` or `&&` to implicitly
 handle this for:
