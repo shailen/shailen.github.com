@@ -4,7 +4,7 @@
   <title><![CDATA[Category: booleans | Shailen Tuli's tech blog]]></title>
   <link href="http://shailen.github.com/blog/categories/booleans/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-11-18T16:19:10-08:00</updated>
+  <updated>2012-11-18T16:28:24-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -155,40 +155,34 @@ expressions.</p>
 <p>Avoid code like this (you will get an exception in checked mode):</p>
 
 <pre><code>String s = '';
-if (s) { 
-}
+if (s) {...}
 </code></pre>
 
 <p>This can be rewritten more clearly:</p>
 
-<pre><code>if (s.isEmpty) {
-  // notice that it is `isEmpty`, not `isEmpty()`
-}
+<pre><code>if (s.isEmpty) {...}
 </code></pre>
 
 <p>The following:</p>
 
 <pre><code>List myList = [1, 2, 3];
-if(myList.indexOf(1)) {};
+if(myList.indexOf(1)) {...};
 </code></pre>
 
 <p>should become:</p>
 
-<pre><code>if (myList.indexOf(1) == 0) {
-}
+<pre><code>if (myList.indexOf(1) != 0) {...};
 </code></pre>
 
-<p>and:</p>
+<p>and this:</p>
 
 <pre><code>int num;
-if (num) {
-}
+if (num) {...}
 </code></pre>
 
-<p>should become:</p>
+<p>is better written as:</p>
 
-<pre><code>if (num == null) {
-}
+<pre><code>if (num == null) {...};
 </code></pre>
 
 <p>The real take home lesson is a) listen to the static warnings b) only use booleans for boolean operations (Do not rely on implicit boolean
