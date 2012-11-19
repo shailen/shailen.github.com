@@ -165,12 +165,12 @@ if (s) {...}
 <p>The following:</p>
 
 <pre><code>List myList = [1, 2, 3];
-if(myList.indexOf(1)) {...};
+if(myList.indexOf(1)) {...}
 </code></pre>
 
 <p>should become:</p>
 
-<pre><code>if (myList.indexOf(1) != 0) {...};
+<pre><code>if (myList.indexOf(1) != 0) {...}
 </code></pre>
 
 <p>and this:</p>
@@ -181,7 +181,7 @@ if (num) {...}
 
 <p>is better written as:</p>
 
-<pre><code>if (num == null) {...};
+<pre><code>if (num == null) {...}
 </code></pre>
 
 <p>The real take home lesson is a) listen to the static warnings b) only use booleans for boolean operations (Do not rely on implicit boolean
