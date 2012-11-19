@@ -4,7 +4,7 @@
   <title><![CDATA[Category: booleans | Shailen Tuli's tech blog]]></title>
   <link href="http://shailen.github.com/blog/categories/booleans/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-11-17T23:58:30-08:00</updated>
+  <updated>2012-11-18T16:19:10-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -18,7 +18,7 @@
     <link href="http://shailen.github.com/blog/2012/11/17/using-boolean-expressions-for-assignment-in-dart/"/>
     <updated>2012-11-17T21:52:00-08:00</updated>
     <id>http://shailen.github.com/blog/2012/11/17/using-boolean-expressions-for-assignment-in-dart</id>
-    <content type="html"><![CDATA[<p>I often do this in Javascript:</p>
+    <content type="html"><![CDATA[<p>I often use boolean evaluation in Javascript for assignment:</p>
 
 <pre><code>var Point = function(options) {
   options = options || {};
@@ -27,7 +27,7 @@
 }
 </code></pre>
 
-<p>in Ruby, I do this:</p>
+<p>And in Ruby, it is idiomatic to do something like this:</p>
 
 <pre><code>age ||= 16; // if age is `nil` or `false`, assign it a value of 16
 </code></pre>
@@ -36,22 +36,21 @@
 
 <pre><code>a, b, c = 1, 2, 3
 d = a &amp;&amp; b &amp;&amp; c
-// d will equal 3
+// d gets the value of c, 3
 </code></pre>
 
-<p>In these cases, the boolean expressions return the value of the last evaluation. So, how should this be done
-in Dart? Consider this code:</p>
+<p>In each case, the boolean expressions return the value of the last evaluation. Can I do something similar in Dart?
+Is this code legal?</p>
 
-<pre><code>var x;
+<pre><code>var x; // x is null
 var y = x || 10;
 </code></pre>
 
-<p>In checked mode, this generates an exception (more on that in a moment). What do you think happens in unchecked mode?  What
-is the value of <code>y</code>?</p>
+<p>In checked mode, no; in unchecked mode, this works, but the result may surprise you.</p>
 
-<p>At first glance, the code looks reasonable, but the answer is <em>really</em> problematic. Based on other languages I have used, I would expect <code>y</code> to equal <code>10</code>.
-In Dart, this does not happen. <code>y</code> actually gets assigned a value of <code>false</code>. Since 10 is not explicitly <code>true</code>, it evaluates to
-<code>false</code>. This is exactly what Dart is supposed to do. See my <a href="http://shailen.github.com/blog/2012/11/16/booleans-in-dart/">post</a> from yesterday it this isn't clear.</p>
+<p>Based on other languages I have used, I would expect <code>y</code> to equal <code>10</code>.
+In Dart, this does not happen and <code>y</code> gets assigned a value of <code>false</code>. Why? Since <code>10</code> is not explicitly <code>true</code>, it evaluates to
+<code>false</code>. All things that are not explicitly <code>true</code> in Dart, are false (see my <a href="http://shailen.github.com/blog/2012/11/16/booleans-in-dart/">post</a> from yesterday it this isn't clear).</p>
 
 <p>Now, in checked mode (you are using checked mode, right?), <code>y</code> doesn't get a value at all because we get an error:</p>
 
@@ -71,23 +70,23 @@ now sees a <code>null</code> (<code>x</code> is null).  Changing the code to:</p
 type 'int' is not a subtype of type 'bool' of 'boolean expression'.
 </code></pre>
 
-<p>No good. Dart wants booleans around the <code>||</code>. Something like this works fine:</p>
+<p>No good. Dart wants booleans around the <code>||</code>. Something like this works fine, but this isn't the sort of thing we are looking for:</p>
 
 <pre><code>int x = 10;
 bool y = x % 3 == 1 || x % 5 == 2;
 // y is true
 </code></pre>
 
-<p>So, how do we correctly handle assignment based on boolean evaluation? We do an explicit test and not rely on <code>||</code> or <code>&amp;&amp;</code> to implicitly
-handle this for:</p>
+<p>So, is there a correct way to handle assignment based on boolean evaluation? Yes. Don't rely on <code>||</code> or <code>&amp;&amp;</code> to implicitly
+handle this for you; instead, explicitly check for truthyness yourself:</p>
 
-<pre><code>int x; // x is null
-int y = x == null ? 0 : x;
-// y now has a value of 0
+<pre><code>int y = x == null ? 0 : x;
 </code></pre>
 
+<p>If <code>x</code> is null, <code>y</code> will be <code>0</code>; else, it will have the value of <code>x</code>. Quite clear and readable.</p>
+
 <p>The lessons of all this? <strong>Use checked mode</strong>. Don't rely on Dart's boolean expressions to magically return boolean values; if such values
-are needed, obtain them directly yourself. Its much clearer to be explicit.</p>
+are needed, obtain them directly yourself. Be explicit.</p>
 ]]></content>
   </entry>
   
