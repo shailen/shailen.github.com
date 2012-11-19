@@ -68,17 +68,17 @@ This can be rewritten more clearly:
 
 The following:
     List myList = [1, 2, 3];
-    if(myList.indexOf(1)) {...};
+    if(myList.indexOf(1)) {...}
   
 should become:
-    if (myList.indexOf(1) != 0) {...};
+    if (myList.indexOf(1) != 0) {...}
    
 and this:
     int num;
     if (num) {...}
 
 is better written as:
-    if (num == null) {...};
+    if (num == null) {...}
 
 The real take home lesson is a) listen to the static warnings b) only use booleans for boolean operations (Do not rely on implicit boolean 
 conversions) c) checked mode is there to stop you immediately if you do bad things during development. Dart works pretty hard 
