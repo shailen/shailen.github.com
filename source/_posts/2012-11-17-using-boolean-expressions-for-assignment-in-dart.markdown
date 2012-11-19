@@ -49,7 +49,7 @@ we get a slightly different error message:
     Unhandled exception:
     type 'int' is not a subtype of type 'bool' of 'boolean expression'.
 
-No good. Dart wants booleans around the `||`. Something like this works fine, but this isn't the sort of thing we are looking for:
+No good. Dart wants booleans around the `||`. Something like this works fine, but it isn't the sort of thing we are looking for:
     int x = 10;
     bool y = x % 3 == 1 || x % 5 == 2;
     // y is true
