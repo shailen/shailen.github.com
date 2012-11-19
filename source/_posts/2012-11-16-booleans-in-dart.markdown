@@ -60,33 +60,25 @@ are in checked or unchecked mode?  My recommendation: always code in checked mod
 expressions.
 
 Avoid code like this (you will get an exception in checked mode):
-  
     String s = '';
-    if (s) { 
-    }
+    if (s) {...}
   
 This can be rewritten more clearly:
-  
-    if (s.isEmpty) {
-      // notice that it is `isEmpty`, not `isEmpty()`
-    }
+    if (s.isEmpty) {...}
 
 The following:
     List myList = [1, 2, 3];
-    if(myList.indexOf(1)) {};
+    if(myList.indexOf(1)) {...};
   
 should become:
-    if (myList.indexOf(1) == 0) {
-    }
+    if (myList.indexOf(1) != 0) {...};
    
-and:
+and this:
     int num;
-    if (num) {
-    }
+    if (num) {...}
 
-should become:
-    if (num == null) {
-    }
+is better written as:
+    if (num == null) {...};
 
 The real take home lesson is a) listen to the static warnings b) only use booleans for boolean operations (Do not rely on implicit boolean 
 conversions) c) checked mode is there to stop you immediately if you do bad things during development. Dart works pretty hard 
