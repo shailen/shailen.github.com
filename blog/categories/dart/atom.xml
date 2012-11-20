@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Dart | Shailen Tuli's tech blog]]></title>
   <link href="http://shailen.github.com/blog/categories/dart/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-11-18T16:32:42-08:00</updated>
+  <updated>2012-11-19T22:27:32-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -70,7 +70,7 @@ now sees a <code>null</code> (<code>x</code> is null).  Changing the code to:</p
 type 'int' is not a subtype of type 'bool' of 'boolean expression'.
 </code></pre>
 
-<p>No good. Dart wants booleans around the <code>||</code>. Something like this works fine, but this isn't the sort of thing we are looking for:</p>
+<p>No good. Dart wants booleans around the <code>||</code>. Something like this works fine, but it isn't the sort of thing we are looking for:</p>
 
 <pre><code>int x = 10;
 bool y = x % 3 == 1 || x % 5 == 2;

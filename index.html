@@ -9,7 +9,8 @@
   <meta name="author" content="Shailen Tuli">
 
   
-  <meta name="description" content="I often use boolean evaluation in Javascript for assignment: var Point = function(options) { options = options || {}; this.x = options['x'] || 0; &hellip;">
+  <meta name="description" content="In this post I&#8217;m going to show you how to create a really simple Dart package (something that would be suitable for pub,
+the package manager &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +65,248 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/19/writing-unittests-for-pub-packages/">Writing Unittests for Pub Packages</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-19T11:18:00-08:00" pubdate data-updated="true">Nov 19<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/19/writing-unittests-for-pub-packages/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In this post I&#8217;m going to show you how to create a really simple Dart package (something that would be suitable for <a href="http://pub.dartlang.org/">pub</a>,
+the package manager for Dart. Because we would never want to write a package without testing the code in it, I will also introduce you to
+Dart&#8217;s quite excellent <code>unittest</code> framework.</p>
+
+<p>For the purposes of this post, our package will be really very basic and consist of a singe <code>range()</code> function modeled roughly on the Python
+builtin function with the same name.  <code>range()</code> will take 3 arguments - <code>start</code>, <code>stop</code> and an optional <code>step</code> - and return a list of ints
+between <code>start</code> and <code>stop</code> separated by <code>step</code> steps. <code>range(0, 4)</code> will return <code>[0, 1, 2, 3]</code> (using
+a default <code>step</code> of <code>1</code>), <code>range(2, 10, 3)</code> will return <code>[2, 5, 8]</code>, etc.</p>
+
+<p>Let&#8217;s get started.</p>
+
+<h2>Creating a Simple Package</h2>
+
+<p>Open up Dart Editor and create a <code>New application</code> called <code>range</code>. For this example, we will not be creating a web project, so uncheck &#8220;Generate
+content for a basic web app&#8221; when you create the application.</p>
+
+<p>Delete the automatically created <code>bin</code> directory. We won&#8217;t be needing it.</p>
+
+<p>Create a top level <code>lib</code> directory. Inside <code>lib</code>, touch a <code>range.dart</code> file: the code for <code>range()</code> will go in here.</p>
+
+<p>Create a top level <code>test</code> directory. Inside <code>test</code>, touch a <code>range_test.dart</code> file: your tests will go in here.</p>
+
+<p>There are other directories and files that you should create - <code>doc/</code>, <code>example/</code>, README.md, etc. - but
+our focus here is on how to write unittests, so I&#8217;ll concentrate on the contents of <code>lib/range.dart</code> and <code>test/range_test.dart</code>.
+To know what else you should be doing to make this a <em>respectable</em> package, see <a href="http://pub.dartlang.org/doc/package-layout.html">this excellent writeup on Package layout
+conventions</a> on the <a href="http://pub.dartlang.org/doc/package-layout.html">pub site</a>.</p>
+
+<h2>pubspec.yaml</h2>
+
+<p>With the basic files created for our package, let&#8217;s open up <code>pubspec.yaml</code> and add a description for the package. I
+added: &#8220;An approximate implementation of the range() function in Python.&#8221;</p>
+
+<p>Now, let&#8217;s specify the necessary dependencies for the package in <code>pubspec.yaml</code>. For our simple package, we only need to add (or uncomment) a
+dependency for the unittest package.</p>
+
+<pre><code>dependencies:
+  unittest: { sdk: unittest }
+</code></pre>
+
+<p>Run <code>pub install</code> (you can find it under <code>Tools</code> in the Editor). This will create a bunch of stuff: a <code>pubspec.lock</code> file, a <code>/packages</code> directory, and a <code>/test/packages</code> directory.</p>
+
+<p>Notice the symlinks created by Dart in the packages directory for <code>/&lt;path-to&gt;/dart-sdk/pkg/unittest/lib</code> and <code>/&lt;path-to&gt;/range/lib</code>.
+<code>/test</code> also creates a symlink to <code>/range/packages</code>. These are all necessary for the plumbing to work correctly; fortunately, Dart handles all the details for us.</p>
+
+<h2>Writing some Code</h2>
+
+<p>Now we can start writing some tests and some code. If this were a real project, I would write the tests first and use Test Driven Development (TDD) to drive the writing of the code.
+But this is a demo project, so we&#8217;ll just create a bare-bones implementation for <code>range()</code> and then start writing tests.</p>
+
+<p>Add the following code to <code>lib/range.dart</code>:</p>
+
+<pre><code>library range; 
+
+List&lt;int&gt; range(int start, int stop, [int step]) {
+  if (start &gt;= stop) {
+    throw new ArgumentError("start must be less than stop");
+  }
+
+  List&lt;int&gt; list = [];
+  f (!?step) step = 1;
+
+  for (int i = start; i &lt; stop; i+= step) {
+    list.add(i);
+  }
+  return list;
+}
+</code></pre>
+
+<h2>Imports</h2>
+
+<p>With that out of the way, we can start writing tests. But first, <code>test/range_test.dart</code> needs access to the <code>unittest</code> package. At the top of
+that file, add this <code>import</code> statement:</p>
+
+<pre><code>import 'package:unittest/unittest.dart';
+</code></pre>
+
+<p>We also need to import the range() function. Remember the <code>library</code> declaration at the top of <code>range.dart</code>? That enables us import <code>range()</code> into our test
+file.</p>
+
+<p>Add a second <code>import</code>statement to <code>range_test.dart</code>.</p>
+
+<pre><code>import 'package:range/range.dart';
+</code></pre>
+
+<h2>Our first test</h2>
+
+<p>Now that the plubming is working, we can write (and run) our first test. Modify <code>range_test.dart</code> so that it looks like this:</p>
+
+<p>import &#8216;package:unittest/unittest.dart&#8217;;
+import &#8216;package:range/range.dart&#8217;;</p>
+
+<pre><code>void main() {
+  test("range() produces a list that starts at `start`", () {
+    expect(range(0, 4)[0], equals(0));
+  });
+}
+</code></pre>
+
+<p>An individual test goes inside <code>test()</code>. <code>expect()</code> evaluates the equality between the expected and actual values. A string
+argument to <code>test()</code> describes the purpose of the test.</p>
+
+<p>Run the test (press the green arrow in the Editor; or, press <code>CMD-R</code> if you are using a Mac; or, type <code>dart test/range_test.dart</code> on the command line).
+Watch the output produced by the editor:</p>
+
+<pre><code>unittest-suite-wait-for-done
+PASS: range() produces a list that starts at `start`
+
+All 1 tests passed.
+unittest-suite-success
+</code></pre>
+
+<p>Our test passes.</p>
+
+<h2>More tests</h2>
+
+<p>Let&#8217;s add a few more tests. We should test that the range does not include <code>stop</code> and that an ArgumentError is raised
+when start >= stop. Add the tests so that your <code>range_test.dart</code> file looks likes this:</p>
+
+<pre><code>import 'package:unittest/unittest.dart';
+import 'package:range/range.dart';
+
+void main() {
+  test("range() produces a list that starts at `start`", () {
+    expect(range(0, 4)[0], equals(0));
+  });
+
+  test ("range() produces a list that stops before `stop`", () {
+    expect(range(0, 4).last, equals(3));
+  });
+
+  test("range() throws an exception when start &gt; stop", () {
+    expect(() =&gt; range(5, 2), throwsA(new isInstanceOf&lt;ArgumentError&gt;()));
+  });
+
+  test("range() throws an exception when start == stop", () {
+    expect(() =&gt; range(5, 5), throwsA(new isInstanceOf&lt;ArgumentError&gt;()));
+  });
+}
+</code></pre>
+
+<p>Run the tests again. They should all pass.</p>
+
+<h2>Nested groups</h2>
+
+<p>What we have here works fine, but we can improve things a bit. Notice the repetition in the string arguments we pass to
+each <code>test()</code> (&#8220;range() produces &#8230;&#8221;, &#8220;range() throws &#8230;&#8221;, etc.)? We should clean that up. Also, we have 4 tests that fall into
+2 natural groups: the first two
+deal with valid arguments and the remaining with invalid arguments. We should arrange our tests to more clearly reflect this grouping. Finally, there are no
+tests for the optional <code>step</code> argument. We should definitely add those. Rewriting our tests, we get:</p>
+
+<pre><code>void main() {
+  group("range()", () {
+    group("produces a list", () {
+      test("that starts at `start`", () {
+        expect(range(0, 4)[0], equals(0));
+      });
+
+      test ("that stops before `stop`", () {
+        expect(range(0, 4).last, equals(3));
+      });
+
+      test("that has consecutive values if no `step` is given", () {
+        expect(range(1, 6), equals([1, 2, 3, 4, 5]));
+      });
+
+      test("has non-consecutive values with `step` &gt; 1", () {
+        expect(range(1, 6, 2), equals([1, 3, 5]));
+      });
+    });
+
+    group("throws an exception", () {
+      test("when start &gt; stop", () {
+        expect(() =&gt; range(5, 2), throwsA(new isInstanceOf&lt;ArgumentError&gt;()));
+      });
+
+      test("when start == stop", () {
+        expect(() =&gt; range(5, 5), throwsA(new isInstanceOf&lt;ArgumentError&gt;()));
+      });
+    });
+  });
+}
+</code></pre>
+
+<p>Much better. We use nested <code>group()</code>s to organize our tests; we pass descriptive string args to <code>group()</code> to make our intent clear; we get rid
+of a lot of repetitive. Let&#8217;s run our tests again:</p>
+
+<pre><code>unittest-suite-wait-for-done
+PASS: range() produces a list that starts at `start`
+PASS: range() produces a list that stops before `stop`
+PASS: range() produces a list that has consecutive values if no `step` is given
+PASS: range() produces a list has non-consecutive values with `step` &gt; 1
+PASS: range() throws an exception when start &gt; stop
+PASS: range() throws an exception when start == stop
+
+All 6 tests passed.
+unittest-suite-success
+</code></pre>
+
+<h2>Summary</h2>
+
+<p>So, we managed to create a minimal Dart package, made it (barely) good enough to put on <code>pub</code>, and wrote a few tests.  This is a good start, of course,
+but we have barely scratched the surface of how we should test our packages. For a very thorough explanation of how the <code>unittest</code> framework works
+in Dart, I would highly recommend a careful reading of <a href="http://www.dartlang.org/articles/dart-unit-tests/">Unit Testing with Dart</a> by Google engineer
+Graham Wheeler. He goes into considerable details about writing tests, defining <code>setUp()</code> and <code>tearDown()</code>. running asychoronous tests, using
+and creating matchers, and configuring your test environment.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -147,7 +390,7 @@ now sees a <code>null</code> (<code>x</code> is null).  Changing the code to:</p
 type 'int' is not a subtype of type 'bool' of 'boolean expression'.
 </code></pre>
 
-<p>No good. Dart wants booleans around the <code>||</code>. Something like this works fine, but this isn&#8217;t the sort of thing we are looking for:</p>
+<p>No good. Dart wants booleans around the <code>||</code>. Something like this works fine, but it isn&#8217;t the sort of thing we are looking for:</p>
 
 <pre><code>int x = 10;
 bool y = x % 3 == 1 || x % 5 == 2;
@@ -763,6 +1006,10 @@ embed code from jsFiddle, and publish easily via a git push.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/11/19/writing-unittests-for-pub-packages/">writing unittests for pub packages</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/11/17/using-boolean-expressions-for-assignment-in-dart/">using boolean expressions for assignment in Dart</a>
       </li>
     
@@ -776,10 +1023,6 @@ embed code from jsFiddle, and publish easily via a git push.</p>
     
       <li class="post">
         <a href="/blog/2012/11/14/dart-string-interpolation/">Dart String Interpolation</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/13/string-concatenation-in-dart/">string concatenation in dart</a>
       </li>
     
   </ul>
