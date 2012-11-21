@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: booleans - Shailen Tuli's tech blog</title>
+  <title>grouping dart tests - Shailen Tuli's tech blog</title>
   <meta name="author" content="Shailen Tuli">
 
   
-  <meta name="description" content="Category: booleans">
+  <meta name="description" content="Yesterday, we create a simple Dart package with a range library and wrote a couple of tests. Let&#8217;s pick up
+where we left off and add more tests &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://shailen.github.comblog/categories/booleans/">
+  <link rel="canonical" href="http://shailen.github.com/blog/2012/11/20/grouping-dart-tests/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -63,50 +64,176 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Booleans</h1>
+    
+      <h1 class="entry-title">Grouping Dart Tests</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-20T16:02:00-08:00" pubdate data-updated="true">Nov 20<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>Yesterday, we create a simple Dart package with a <code>range</code> library and wrote a couple of tests. Let&#8217;s pick up
+where we left off and add more tests.</p>
 
-  
-  <h2>2012</h2>
+<p>We should test that the list returned by <code>range()</code> does not include <code>stop</code> and that an ArgumentError is raised when start >= stop.
+Modify your <code>range_test.dart</code> file so that it contains the new tests:</p>
 
-<article>
-  
-<h1><a href="/blog/2012/11/17/using-boolean-expressions-for-assignment-in-dart/">using boolean expressions for assignment in Dart</a></h1>
-<time datetime="2012-11-17T21:52:00-08:00" pubdate><span class='month'>Nov</span> <span class='day'>17</span> <span class='year'>2012</span></time>
+<pre><code>import 'package:unittest/unittest.dart';
+import 'package:range/range.dart';
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/dart/'>Dart</a>, <a class='category' href='/blog/categories/assignment/'>assignment</a>, <a class='category' href='/blog/categories/booleans/'>booleans</a></span>
-</footer>
+void main() {
+  test("range() produces a list that starts at `start`", () {
+    expect(range(0, 4)[0], equals(0));
+  });
 
+  test ("range() produces a list that stops before `stop`", () {
+    expect(range(0, 4).last, equals(3));
+  });
 
-</article>
+  test("range() throws an exception when start &gt; stop", () {
+    expect(() =&gt; range(5, 2), throwsA(new isInstanceOf&lt;ArgumentError&gt;()));
+  });
 
+  test("range() throws an exception when start == stop", () {
+    expect(() =&gt; range(5, 5), throwsA(new isInstanceOf&lt;ArgumentError&gt;()));
+  });
+}
+</code></pre>
 
+<p>Run the tests again. They should all pass. We have doubled our test coverage!</p>
 
-<article>
-  
-<h1><a href="/blog/2012/11/16/booleans-in-dart/">booleans in dart</a></h1>
-<time datetime="2012-11-16T18:32:00-08:00" pubdate><span class='month'>Nov</span> <span class='day'>16</span> <span class='year'>2012</span></time>
+<p>Now, what we have here works fine, but we can improve things a bit. Notice the repetition in the string arguments we pass to
+each <code>test()</code> (&#8220;range() produces &#8230;&#8221;, &#8220;range() throws &#8230;&#8221;, etc.)? We should clean that up. Also, we have 4 tests that fall into
+2 natural groups: the first two call <code>range()</code> with valid arguments and the last two with invalid arguments. We should arrange
+our tests more clearly to reflect this grouping. Finally, there are no tests for the optional <code>step</code> argument. We should add those.
+Rewriting our tests, we get:</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/dart/'>Dart</a>, <a class='category' href='/blog/categories/booleans/'>booleans</a></span>
-</footer>
+<pre><code>import 'package:unittest/unittest.dart';
+import 'package:range/range.dart';
 
+void main() {
+  group("range()", () {
+    group("produces a list that", () {
+      test("starts at `start`", () {
+        expect(range(0, 4)[0], equals(0));
+      });
 
-</article>
+      test ("stops before `stop`", () {
+        expect(range(0, 4).last, equals(3));
+      });
 
+      test("has consecutive values if no `step` is given", () {
+        expect(range(1, 6), equals([1, 2, 3, 4, 5]));
+      });
+
+      test("has non-consecutive values with `step` &gt; 1", () {
+        expect(range(1, 6, 2), equals([1, 3, 5]));
+      });
+    });
+
+    group("throws an exception when", () {
+      test("start &gt; stop", () {
+        expect(() =&gt; range(5, 2), throwsA(new isInstanceOf&lt;ArgumentError&gt;()));
+      });
+
+      test("start == stop", () {
+        expect(() =&gt; range(5, 5), throwsA(new isInstanceOf&lt;ArgumentError&gt;()));
+      });
+    });
+  });
+}
+</code></pre>
+
+<p>Much better. We use nested <code>group()</code>s to organize our tests; we pass descriptive string args to each <code>group()</code> to make our intent clear; we get rid
+of a lot of repetition.</p>
+
+<p>Let&#8217;s run our tests again:</p>
+
+<pre><code>unittest-suite-wait-for-done
+PASS: range() produces a list that starts at `start`
+PASS: range() produces a list that stops before `stop`
+PASS: range() produces a list that has consecutive values if no `step` is given
+PASS: range() produces a list that has non-consecutive values with `step` &gt; 1
+PASS: range() throws an exception when start &gt; stop
+PASS: range() throws an exception when start == stop
+
+All 6 tests passed.
+unittest-suite-success
+</code></pre>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Shailen Tuli</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-20T16:02:00-08:00" pubdate data-updated="true">Nov 20<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shailen.github.com/blog/2012/11/20/grouping-dart-tests/" data-via="shailentuli" data-counturl="http://shailen.github.com/blog/2012/11/20/grouping-dart-tests/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/11/19/writing-unittests-for-pub-packages/" title="Previous Post: writing unittests for pub packages">&laquo; writing unittests for pub packages</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -207,7 +334,10 @@
       var disqus_shortname = 'shailentuliblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://shailen.github.com/blog/2012/11/20/grouping-dart-tests/';
+        var disqus_url = 'http://shailen.github.com/blog/2012/11/20/grouping-dart-tests/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
