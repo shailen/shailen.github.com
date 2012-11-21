@@ -117,15 +117,15 @@ range(1, 6, 2); // [1, 3, 5]
 
 <h2>Creating a Simple Package</h2>
 
-<p>Open up Dart Editor and create a <code>New application</code> called <code>range</code>. For this example, we will not be creating a web project, so uncheck &#8220;Generate
-content for a basic web app&#8221; when you create the application. But do make sure that <code>Add Pub support</code> is checked.</p>
+<p>Open up Dart Editor and create a <code>New application</code> called <code>range</code>. For this example, we will not be creating a web project, so uncheck <code>Generate
+content for a basic web app</code> when you create the application. But do make sure that <code>Add Pub support</code> is checked.</p>
 
 <p>Delete the automatically created <code>bin</code> directory. We won&#8217;t be needing it.</p>
 
 <p>Create a top level <code>lib</code> directory. Inside <code>lib</code>, create a <code>range.dart</code> file: the code for <code>range()</code> will go in here.</p>
 
 <p>There are other directories and files that you should create - a README, a LICENSE, a <code>doc/</code> folder for documentation,
-an <code>example/</code> folder showing usage of your package, etc. - but our focus here is on how to write unittests, so we&#8217;ll skip over those
+an <code>example/</code> folder with examples showing usage of your package, etc. - but our focus here is on how to write unittests, so we&#8217;ll skip over those
 files and directories for now. To know what else you should be doing to make this a <em>respectable</em> package, see this excellent writeup
 on <a href="http://pub.dartlang.org/doc/package-layout.html">package layout conventions</a> on the <a href="http://pub.dartlang.org/doc/package-layout.html">pub site</a>.</p>
 
@@ -135,9 +135,7 @@ on <a href="http://pub.dartlang.org/doc/package-layout.html">package layout conv
 package (read more about <a href="http://pub.dartlang.org/doc/pubspec.html">Pubspec format</a>). Every package <strong>must</strong> contain a <code>pubspec.yaml</code>; in fact, it
 is this file that makes it a package.</p>
 
-<p>Add a simple description for the package and specify its only dependency, the unittest package.</p>
-
-<p>Your <code>pubspec.yaml</code> should look like this:</p>
+<p>Add a simple description for the package and specify its only dependency, the unittest package. Your <code>pubspec.yaml</code> should look like this:</p>
 
 <pre><code>name:  range
 description:  An approximate implementation of the range() function in Python.

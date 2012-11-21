@@ -4,7 +4,7 @@
   <title><![CDATA[Shailen Tuli's tech blog]]></title>
   <link href="http://shailen.github.com/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-11-20T17:08:19-08:00</updated>
+  <updated>2012-11-21T08:39:39-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -138,15 +138,15 @@ range(1, 6, 2); // [1, 3, 5]
 
 <h2>Creating a Simple Package</h2>
 
-<p>Open up Dart Editor and create a <code>New application</code> called <code>range</code>. For this example, we will not be creating a web project, so uncheck &#8220;Generate
-content for a basic web app&#8221; when you create the application. But do make sure that <code>Add Pub support</code> is checked.</p>
+<p>Open up Dart Editor and create a <code>New application</code> called <code>range</code>. For this example, we will not be creating a web project, so uncheck <code>Generate
+content for a basic web app</code> when you create the application. But do make sure that <code>Add Pub support</code> is checked.</p>
 
 <p>Delete the automatically created <code>bin</code> directory. We won&#8217;t be needing it.</p>
 
 <p>Create a top level <code>lib</code> directory. Inside <code>lib</code>, create a <code>range.dart</code> file: the code for <code>range()</code> will go in here.</p>
 
 <p>There are other directories and files that you should create - a README, a LICENSE, a <code>doc/</code> folder for documentation,
-an <code>example/</code> folder showing usage of your package, etc. - but our focus here is on how to write unittests, so we&#8217;ll skip over those
+an <code>example/</code> folder with examples showing usage of your package, etc. - but our focus here is on how to write unittests, so we&#8217;ll skip over those
 files and directories for now. To know what else you should be doing to make this a <em>respectable</em> package, see this excellent writeup
 on <a href="http://pub.dartlang.org/doc/package-layout.html">package layout conventions</a> on the <a href="http://pub.dartlang.org/doc/package-layout.html">pub site</a>.</p>
 
@@ -156,9 +156,7 @@ on <a href="http://pub.dartlang.org/doc/package-layout.html">package layout conv
 package (read more about <a href="http://pub.dartlang.org/doc/pubspec.html">Pubspec format</a>). Every package <strong>must</strong> contain a <code>pubspec.yaml</code>; in fact, it
 is this file that makes it a package.</p>
 
-<p>Add a simple description for the package and specify its only dependency, the unittest package.</p>
-
-<p>Your <code>pubspec.yaml</code> should look like this:</p>
+<p>Add a simple description for the package and specify its only dependency, the unittest package. Your <code>pubspec.yaml</code> should look like this:</p>
 
 <pre><code>name:  range
 description:  An approximate implementation of the range() function in Python.
@@ -277,7 +275,8 @@ var y = x || 10;
 
 <p>Based on other languages I have used, I would expect <code>y</code> to equal <code>10</code>.
 In Dart, this does not happen and <code>y</code> gets assigned a value of <code>false</code>. Why? Since <code>10</code> is not explicitly <code>true</code>, it evaluates to
-<code>false</code>. All things that are not explicitly <code>true</code> in Dart, are false (see my <a href="http://shailen.github.com/blog/2012/11/16/booleans-in-dart/">post</a> from yesterday it this isn&#8217;t clear).</p>
+<code>false</code>. All things that are not explicitly <code>true</code> in Dart, are false (see my <a href="http://shailen.github.com/blog/2012/11/16/booleans-in-dart/">post</a>
+from yesterday if this isn&#8217;t clear).</p>
 
 <p>Now, in checked mode (you are using checked mode, right?), <code>y</code> doesn&#8217;t get a value at all because we get an error:</p>
 
@@ -297,7 +296,7 @@ now sees a <code>null</code> (<code>x</code> is null).  Changing the code to:</p
 type 'int' is not a subtype of type 'bool' of 'boolean expression'.
 </code></pre>
 
-<p>No good. Dart wants booleans around the <code>||</code>. Something like this works fine, but it isn&#8217;t the sort of thing we are looking for:</p>
+<p>No good. Dart wants booleans around the <code>||</code>. This works fine, but it isn&#8217;t what we are looking for:</p>
 
 <pre><code>int x = 10;
 bool y = x % 3 == 1 || x % 5 == 2;
@@ -312,8 +311,25 @@ handle this for you; instead, explicitly check for truthyness yourself:</p>
 
 <p>If <code>x</code> is null, <code>y</code> will be <code>0</code>; else, it will have the value of <code>x</code>. Quite clear and readable.</p>
 
+<p>Boolean based assignment is common in JavaScript because there we don&#8217;t have as rich an understanding
+of keyword arguments and default values as Dart has. In Dart, we can do this:</p>
+
+<pre><code>myFunction({x: 0, y: 0}) {
+  ...
+}
+</code></pre>
+
+<p>If you need to check whether a parameter was passed a value or not, you can easily do so:</p>
+
+<pre><code>myFunction([x=0]) {
+  if (?x) {
+    ...
+  }
+}
+</code></pre>
+
 <p>The lessons of all this? <strong>Use checked mode</strong>. Don&#8217;t rely on Dart&#8217;s boolean expressions to magically return boolean values; if such values
-are needed, obtain them directly yourself. Be explicit.</p>
+are needed, obtain them directly yourself. Be explicit. Use default arguemnts in functions and methods. Use <code>?</code> to check if a parameter was passed.</p>
 ]]></content>
   </entry>
   
