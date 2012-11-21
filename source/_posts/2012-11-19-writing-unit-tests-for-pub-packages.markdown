@@ -26,7 +26,7 @@ It will return a list of ints between `start` and `stop` separated by `step` ste
 
 Let's get started.
 
-## Create a Simple Package
+## Create a simple package
 
 Open up Dart Editor and create a `New application` called `range`. For this example, we will not be creating a web project, so uncheck `Generate 
 content for a basic web app` when you create the application. But do make sure that `Add Pub support` is checked.
