@@ -3,11 +3,11 @@ layout: post
 title: "grouping dart tests"
 date: 2012-11-20 16:02
 comments: true
-published: false
+published: true
 categories: 
 ---
 
-Yesterday, we create a simple Dart package with a `range` library. We also wrote a couple of tests. Let's pick up
+Yesterday, we create a simple Dart package with a `range` library and wrote a couple of tests. Let's pick up
 where we left off and add more tests.
 
 We should test that the list returned by `range()` does not include `stop` and that an ArgumentError is raised when start >= stop. 
@@ -39,7 +39,7 @@ Run the tests again. They should all pass. We have doubled our test coverage!
 Now, what we have here works fine, but we can improve things a bit. Notice the repetition in the string arguments we pass to
 each `test()` ("range() produces ...", "range() throws ...", etc.)? We should clean that up. Also, we have 4 tests that fall into
 2 natural groups: the first two call `range()` with valid arguments and the last two with invalid arguments. We should arrange
-our tests more clearly to reflect this grouping. Finally, there are no tests for the optional `step` argument. We need to add those.
+our tests more clearly to reflect this grouping. Finally, there are no tests for the optional `step` argument. We should add those.
 Rewriting our tests, we get: 
 
     import 'package:unittest/unittest.dart';
