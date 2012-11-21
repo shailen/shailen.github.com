@@ -32,7 +32,8 @@ In checked mode, no; in unchecked mode, this works, but the result may surprise 
 
 Based on other languages I have used, I would expect `y` to equal `10`.
 In Dart, this does not happen and `y` gets assigned a value of `false`. Why? Since `10` is not explicitly `true`, it evaluates to 
-`false`. All things that are not explicitly `true` in Dart, are false (see my [post](http://shailen.github.com/blog/2012/11/16/booleans-in-dart/) from yesterday it this isn't clear).
+`false`. All things that are not explicitly `true` in Dart, are false (see my [post](http://shailen.github.com/blog/2012/11/16/booleans-in-dart/)
+from yesterday if this isn't clear).
 
 Now, in checked mode (you are using checked mode, right?), `y` doesn't get a value at all because we get an error:
 
@@ -49,7 +50,7 @@ we get a slightly different error message:
     Unhandled exception:
     type 'int' is not a subtype of type 'bool' of 'boolean expression'.
 
-No good. Dart wants booleans around the `||`. Something like this works fine, but it isn't the sort of thing we are looking for:
+No good. Dart wants booleans around the `||`. This works fine, but it isn't what we are looking for:
     int x = 10;
     bool y = x % 3 == 1 || x % 5 == 2;
     // y is true
@@ -60,8 +61,23 @@ handle this for you; instead, explicitly check for truthyness yourself:
 
 If `x` is null, `y` will be `0`; else, it will have the value of `x`. Quite clear and readable.
 
+Boolean based assignment is common in JavaScript because there we don't have as rich an understanding 
+of keyword arguments and default values as Dart has. In Dart, we can do this:
+
+    myFunction({x: 0, y: 0}) {
+      ...
+    }
+
+If you need to check whether a parameter was passed a value or not, you can easily do so:
+
+    myFunction([x=0]) {
+      if (?x) {
+        ...
+      }
+    }
+    
 The lessons of all this? **Use checked mode**. Don't rely on Dart's boolean expressions to magically return boolean values; if such values
-are needed, obtain them directly yourself. Be explicit.
+are needed, obtain them directly yourself. Be explicit. Use default arguemnts in functions and methods. Use `?` to check if a parameter was passed.
 
 
 

@@ -28,15 +28,15 @@ Let's get started.
 
 ## Creating a Simple Package
 
-Open up Dart Editor and create a `New application` called `range`. For this example, we will not be creating a web project, so uncheck "Generate 
-content for a basic web app" when you create the application. But do make sure that `Add Pub support` is checked.
+Open up Dart Editor and create a `New application` called `range`. For this example, we will not be creating a web project, so uncheck `Generate 
+content for a basic web app` when you create the application. But do make sure that `Add Pub support` is checked.
 
 Delete the automatically created `bin` directory. We won't be needing it.
 
 Create a top level `lib` directory. Inside `lib`, create a `range.dart` file: the code for `range()` will go in here. 
 
 There are other directories and files that you should create - a README, a LICENSE, a `doc/` folder for documentation,
-an `example/` folder showing usage of your package, etc. - but our focus here is on how to write unittests, so we'll skip over those
+an `example/` folder with examples showing usage of your package, etc. - but our focus here is on how to write unittests, so we'll skip over those
 files and directories for now. To know what else you should be doing to make this a _respectable_ package, see this excellent writeup
 on [package layout conventions](http://pub.dartlang.org/doc/package-layout.html) on the [pub site](http://pub.dartlang.org/doc/package-layout.html).
 
@@ -46,9 +46,7 @@ With the basic files created for our package, let's open up `pubspec.yaml` and a
 package (read more about [Pubspec format](http://pub.dartlang.org/doc/pubspec.html)). Every package **must** contain a `pubspec.yaml`; in fact, it 
 is this file that makes it a package. 
 
-Add a simple description for the package and specify its only dependency, the unittest package. 
-
-Your `pubspec.yaml` should look like this:
+Add a simple description for the package and specify its only dependency, the unittest package. Your `pubspec.yaml` should look like this:
 
     name:  range
     description:  An approximate implementation of the range() function in Python.
