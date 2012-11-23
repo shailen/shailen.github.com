@@ -38,6 +38,12 @@
 
 
 /* Non highlighted code colors */
-//$pre-bg: $base03;
-//$pre-border: darken($base02, 5);
-//$pre-color: $base1;
+$pre-bg: #eee;
+$pre-border: #ddd;
+$pre-color: #333;
+
+
+
+ // Main Section Colors
+$main-bg: #fff !default;
+$subtitle-color: #ddd !default;
