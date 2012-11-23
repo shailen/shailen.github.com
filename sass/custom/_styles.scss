@@ -38,7 +38,7 @@ body > header h2 {
 
 p, li {
   code {
-    color: rgb(255, 30, 20);
+    color: #F07100;
   }
   pre code { font-size: 1em !important; background: none; border: none; }
 }
@@ -187,9 +187,8 @@ body > nav form .search {
 }
 
 pre {
-  background: #f0f0f0;
-  background: #eee;
-  color: #333;
+  background: #f0f6ff;
+  color: #111;
 }
 
 body > footer {
