@@ -97,15 +97,15 @@ em {
 }
 
 .main-navigation li a {
-  color: #333;
-}
-
-.main-navigation li a:hover {
   color: #666;
 }
 
+.main-navigation li a:hover {
+  color: #999;
+}
+
 .main-navigation li a:visited {
-  color: #444;
+  color: #7f7f7f;
 }
 
 html {
