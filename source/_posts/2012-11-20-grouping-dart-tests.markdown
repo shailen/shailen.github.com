@@ -4,7 +4,7 @@ title: "grouping dart tests"
 date: 2012-11-20 16:02
 comments: true
 published: true
-categories: 
+categories: [dart, dartlang, unittest]
 ---
 
 Yesterday, we create a simple Dart package with a `range` library and wrote a couple of tests. Let's pick up

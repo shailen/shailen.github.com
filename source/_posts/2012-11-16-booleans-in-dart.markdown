@@ -3,7 +3,7 @@ layout: post
 title: "booleans in dart"
 date: 2012-11-16 18:32
 comments: true
-categories: [Dart, booleans] 
+categories: [dart, dartlang, booleans] 
 ---
 
 We've all written code that looks something like this:

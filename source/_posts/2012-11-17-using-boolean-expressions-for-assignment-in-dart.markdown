@@ -3,7 +3,7 @@ layout: post
 title: "using boolean expressions for assignment in Dart"
 date: 2012-11-17 21:52
 comments: true
-categories: [Dart, booleans, assignment] 
+categories: [dart, dartlang, booleans, assignment] 
 ---
 
 I often use boolean evaluation in Javascript for assignment:

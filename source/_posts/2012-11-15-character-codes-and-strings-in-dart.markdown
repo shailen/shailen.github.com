@@ -3,7 +3,7 @@ layout: post
 title: "character codes and strings in Dart"
 date: 2012-11-15 15:29
 comments: true
-categories: [charCodes, charCodeAt, StringBuffer]
+categories: [dart, dartlang, charCodes, charCodeAt, StringBuffer]
 ---
 
 In my Python programs, I found use for the `ord()` and `chr()` builtins to convert between string characters and their

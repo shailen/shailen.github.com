@@ -3,7 +3,7 @@ layout: post
 title: "Dart String Interpolation"
 date: 2012-11-14 11:23
 comments: true
-categories: 
+categories: [dart, dartlang, string, interpolation]
 ---
 
 You can access the value of an expression inside a string by using `${expression}`.

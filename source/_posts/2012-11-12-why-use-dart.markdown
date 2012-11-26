@@ -3,7 +3,7 @@ layout: post
 title: "why use Dart?"
 date: 2012-11-12 14:19
 comments: true
-categories: 
+categories:  [dart, dartlang, javascript]
 ---
 
 Building web applications is hard. Building _**large**_ web applications is a real challenge. Given this, I am super

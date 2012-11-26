@@ -3,7 +3,7 @@ layout: post
 title: "writing unit tests for pub packages"
 date: 2012-11-19 11:18
 comments: true
-categories: 
+categories: [dart, dartlang, unittest, pub, dart-editor]
 ---
 
 In this post I'm going to show you how to create a really simple Dart package. Because we would never want to
