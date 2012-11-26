@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Shailen Tuli's tech blog]]></title>
+  <title><![CDATA[Shailen Tuli's blog]]></title>
   <link href="http://shailen.github.com/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-11-26T10:47:03-08:00</updated>
+  <updated>2012-11-26T11:33:43-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
