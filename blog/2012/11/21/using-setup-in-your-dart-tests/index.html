@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: charCodes - Shailen Tuli's tech blog</title>
+  <title>using setUp() in your Dart tests - Shailen Tuli's tech blog</title>
   <meta name="author" content="Shailen Tuli">
 
   
-  <meta name="description" content="Category: charCodes">
+  <meta name="description" content="Take this minimal Point class: class Point { num x; num y; Point(this.x, this.y); num distanceTo(Point other) { ... }
+} As you write tests for Point &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://shailen.github.comblog/categories/charcodes/">
+  <link rel="canonical" href="http://shailen.github.com/blog/2012/11/21/using-setup-in-your-dart-tests/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -63,36 +64,137 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: charCodes</h1>
+    
+      <h1 class="entry-title">Using setUp() in Your Dart Tests</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-21T22:47:00-08:00" pubdate data-updated="true">Nov 21<span>st</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>Take this minimal <code>Point</code> class:</p>
 
-  
-  <h2>2012</h2>
+<pre><code>class Point {
+  num x;
+  num y;
+  Point(this.x, this.y);
 
-<article>
-  
-<h1><a href="/blog/2012/11/15/character-codes-and-strings-in-dart/">character codes and strings in Dart</a></h1>
-<time datetime="2012-11-15T15:29:00-08:00" pubdate><span class='month'>Nov</span> <span class='day'>15</span> <span class='year'>2012</span></time>
+  num distanceTo(Point other) {
+    ...
+  }
+}
+</code></pre>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/stringbuffer/'>StringBuffer</a>, <a class='category' href='/blog/categories/charcodeat/'>charCodeAt</a>, <a class='category' href='/blog/categories/charcodes/'>charCodes</a></span>
-</footer>
+<p>As you write tests for <code>Point</code>, you will probably want to set up one or more <code>point</code> objects that you can access in each
+test. Something like:</p>
 
+<pre><code>void main() {
+  group("Point", (){
+    setUp((){
+      Point p1 = new Point(3, 4);
+      Point p2 = new Point(3, 5);
+    });
+    test("distanceTo()", (){
+      expect(p1.distanceTo(p2), equals(...));
+    });
+  });
+}
+</code></pre>
 
-</article>
+<p>Do this and the Editor starts complaining that it cannot make sense of <code>p1</code> or <code>p2</code>. Why?  Remember, <code>setUp()</code> simply calls the function passed
+to it before each <code>test()</code> and our code defining <code>p1</code> and <code>p2</code> will therefore run every time. But (and this seems like a Captain Obvious mement) because <code>p1</code> and <code>p2</code>
+are local to function called by <code>setUp()</code>, they cannot be accessed from outside that function.  But it takes only very small changes to take care of the access problem:</p>
 
+<pre><code>void main() {
+  group("Point", (){
+    Point p1;
+    Point p2;
+    setUp((){
+      p1 = new Point(3, 4);
+      p2 = new Point(3, 5);
+    });
+    test("distanceTo()", (){
+      expect(p1.distanceTo(p2), equals(34));
+    });
+  });
+});
+</code></pre>
+
+<p>Now, the function called by <code>setUp()</code> assigns a value to the already existing <code>p1</code> and <code>p2</code>.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Shailen Tuli</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-21T22:47:00-08:00" pubdate data-updated="true">Nov 21<span>st</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shailen.github.com/blog/2012/11/21/using-setup-in-your-dart-tests/" data-via="shailentuli" data-counturl="http://shailen.github.com/blog/2012/11/21/using-setup-in-your-dart-tests/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/11/20/grouping-dart-tests/" title="Previous Post: grouping dart tests">&laquo; grouping dart tests</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -193,7 +295,10 @@
       var disqus_shortname = 'shailentuliblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://shailen.github.com/blog/2012/11/21/using-setup-in-your-dart-tests/';
+        var disqus_url = 'http://shailen.github.com/blog/2012/11/21/using-setup-in-your-dart-tests/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

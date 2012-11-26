@@ -9,8 +9,8 @@
   <meta name="author" content="Shailen Tuli">
 
   
-  <meta name="description" content="Yesterday, we create a simple Dart package with a range library and wrote a couple of tests. Let&#8217;s pick up
-where we left off and add more tests &hellip;">
+  <meta name="description" content="Take this minimal Point class: class Point { num x; num y; Point(this.x, this.y); num distanceTo(Point other) { ... }
+} As you write tests for Point &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,92 @@ where we left off and add more tests &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/21/using-setup-in-your-dart-tests/">Using setUp() in Your Dart Tests</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-21T22:47:00-08:00" pubdate data-updated="true">Nov 21<span>st</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/21/using-setup-in-your-dart-tests/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Take this minimal <code>Point</code> class:</p>
+
+<pre><code>class Point {
+  num x;
+  num y;
+  Point(this.x, this.y);
+
+  num distanceTo(Point other) {
+    ...
+  }
+}
+</code></pre>
+
+<p>As you write tests for <code>Point</code>, you will probably want to set up one or more <code>point</code> objects that you can access in each
+test. Something like:</p>
+
+<pre><code>void main() {
+  group("Point", (){
+    setUp((){
+      Point p1 = new Point(3, 4);
+      Point p2 = new Point(3, 5);
+    });
+    test("distanceTo()", (){
+      expect(p1.distanceTo(p2), equals(...));
+    });
+  });
+}
+</code></pre>
+
+<p>Do this and the Editor starts complaining that it cannot make sense of <code>p1</code> or <code>p2</code>. Why?  Remember, <code>setUp()</code> simply calls the function passed
+to it before each <code>test()</code> and our code defining <code>p1</code> and <code>p2</code> will therefore run every time. But (and this seems like a Captain Obvious mement) because <code>p1</code> and <code>p2</code>
+are local to function called by <code>setUp()</code>, they cannot be accessed from outside that function.  But it takes only very small changes to take care of the access problem:</p>
+
+<pre><code>void main() {
+  group("Point", (){
+    Point p1;
+    Point p2;
+    setUp((){
+      p1 = new Point(3, 4);
+      p2 = new Point(3, 5);
+    });
+    test("distanceTo()", (){
+      expect(p1.distanceTo(p2), equals(34));
+    });
+  });
+});
+</code></pre>
+
+<p>Now, the function called by <code>setUp()</code> assigns a value to the already existing <code>p1</code> and <code>p2</code>.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1066,6 +1152,10 @@ embed code from jsFiddle, and publish easily via a git push.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/11/21/using-setup-in-your-dart-tests/">using setUp() in your Dart tests</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/11/20/grouping-dart-tests/">grouping dart tests</a>
       </li>
     
@@ -1079,10 +1169,6 @@ embed code from jsFiddle, and publish easily via a git push.</p>
     
       <li class="post">
         <a href="/blog/2012/11/16/booleans-in-dart/">booleans in dart</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/15/character-codes-and-strings-in-dart/">character codes and strings in Dart</a>
       </li>
     
   </ul>
