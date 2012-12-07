@@ -178,19 +178,14 @@ void onStart() =&gt; stopwatch.start();
 <p><code>Configuration</code> defines the twin <code>onTestStart()</code> and <code>onTestResult()</code> functions
 that basically define which test is currently being run:</p>
 
-<p>  void onTestStart(TestCase testCase) {</p>
+<pre><code>void onTestStart(TestCase testCase) {
+  currentTestCase = testCase;
+}
 
-<pre><code>currentTestCase = testCase;
+void onTestResult(TestCase testCase) {
+  currentTestCase = null;
+}
 </code></pre>
-
-<p>  }</p>
-
-<p>  void onTestResult(TestCase testCase) {</p>
-
-<pre><code>currentTestCase = null;
-</code></pre>
-
-<p>  }</p>
 
 <p>We don&#8217;t need to tinker with <code>onTestRun()</code>, but we&#8217;ll override <code>onTestResult()</code> to
 output the green <code>.</code> or red <code>F</code> for passing and failing tests, respectively:</p>
@@ -363,9 +358,9 @@ look like this:</p>
 <p>Everything is green. Great! But perhaps you were in a hurry and got your <code>0</code> and
 <code>1</code> mixed up in the first test:</p>
 
-<pre><code>  test("when n is 0", () {   
-    expect(factorial(1), equals(0)); // oops....!
-  });
+<pre><code>test("when n is 0", () {   
+  expect(factorial(1), equals(0)); // oops....!
+});
 </code></pre>
 
 <p>If you run the tests now, you&#8217;ll see:</p>
