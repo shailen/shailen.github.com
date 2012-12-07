@@ -74,13 +74,13 @@ good place to start running the stopwatch for timing our tests:
 `Configuration` defines the twin `onTestStart()` and `onTestResult()` functions
 that basically define which test is currently being run:
 
-  void onTestStart(TestCase testCase) {
-    currentTestCase = testCase;
-  }
+    void onTestStart(TestCase testCase) {
+      currentTestCase = testCase;
+    }
 
-  void onTestResult(TestCase testCase) {
-    currentTestCase = null;
-  }
+    void onTestResult(TestCase testCase) {
+      currentTestCase = null;
+    }
 
 We don't need to tinker with `onTestRun()`, but we'll override `onTestResult()` to
 output the green `.` or red `F` for passing and failing tests, respectively:
@@ -250,9 +250,9 @@ look like this:
 Everything is green. Great! But perhaps you were in a hurry and got your `0` and
 `1` mixed up in the first test:
 
-      test("when n is 0", () {   
-        expect(factorial(1), equals(0)); // oops....!
-      });
+    test("when n is 0", () {   
+      expect(factorial(1), equals(0)); // oops....!
+    });
       
 If you run the tests now, you'll see:
 
