@@ -1,0 +1,583 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>customizing the look of your test run output - Shailen Tuli's blog</title>
+  <meta name="author" content="Shailen Tuli">
+
+  
+  <meta name="description" content="unittest provides a default configuration that determines the
+content and appearance of the output from running your tests. In addition, the
+package &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://shailen.github.com/blog/2012/12/06/customizing-the-look-of-your-test-run-output/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Shailen Tuli's blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36696024-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Shailen Tuli's blog</a></h1>
+  
+    <h2>Thoughts on coding in Dart, Ruby, Python and Javascript</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:shailen.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Customizing the Look of Your Test Run Output</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-06T14:57:00-08:00" pubdate data-updated="true">Dec 6<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><code>unittest</code> provides a default configuration that determines the
+content and appearance of the output from running your tests. In addition, the
+package provides fancier configurations for running tests in the browser, or on
+the VM.</p>
+
+<p>But suppose you want to customize the test run output? Maybe you are an ardent
+Test Driven Development (TDD) hacker, and want to have your test output be
+in sync with TDD Red-Green-Refactor workflow (passing tests in green, failing
+tests in red); maybe you want a green &#8220;.&#8221; printed to the command line for every
+passing test (you don&#8217;t care for all the &#8220;PASS: &#8230;&#8221; messages that the default
+configuration gives you), and a red &#8216;F&#8217; printed for every failing test, with
+more details about the failures in the summary. You also want the ouput to
+list the file where the tests being run are located and you want to know how
+long it takes to run all your tests.</p>
+
+<p>To do all this, you need to extend the default <code>Configuration</code> class (see
+<code>unittest/src/config.dart</code>) and customize your environment by passing an
+instance of that class to <code>configure()</code> as an argument.
+A <code>Configuration</code> has several functions that get called at different stages of
+the testing process:</p>
+
+<pre><code>onInit(), when the test framework is initialized
+onStart(), before the first test is run
+onTestStart(), when a test starts running
+onTestResult(), upon the completion of each test
+onDone(), when all tests are done
+</code></pre>
+
+<p>and you can override all of these.</p>
+
+<p>Let&#8217;s extend <code>Configuration</code> and begin by adding a few constants to help with the
+presentation:</p>
+
+<pre><code>class ColorTestRunner extends Configuration {
+  const String NEUTRAL_COLOR = "\u001b[33;34m"; // blue
+  const String PASS_COLOR = "\u001b[33;32m";    // green
+  const String FAIL_COLOR = "\u001b[33;31m";    // red
+  const String RESET_COLOR = "\u001b[33;0m";
+
+  ...
+}
+</code></pre>
+
+<p>We will prefix our failing output with <code>FAIL_COLOR</code>, passing output
+with <code>PASS_COLOR</code> and use <code>RESET_COLOR</code> to revert back to the user&#8217;s settings.
+We will use <code>NEUTRAL_COLOR</code> to print a small introduction and the summary.</p>
+
+<p>We are now ready to start filling out our <code>ColorTestRunner</code> class. The
+<code>onInit()</code> of <code>Configuration</code> is empty; let&#8217;s add a little introduction that
+prints the name of the file containing the tests:</p>
+
+<pre><code>void onInit() { 
+  print(NEUTRAL_COLOR);
+  Options options = new Options();  
+  print("Running tests for ${options.script}");
+  print(RESET_COLOR);
+}
+</code></pre>
+
+<p>Now let&#8217;s move on to <code>onStart()</code>. This is called after <code>onInit()</code> but before
+the first test is run. In the default <code>Configuration</code>, this prints the
+<code>unittest-suite-wait-for-done</code> message. We pushed our custom message in
+the <code>onInit()</code>, so we don&#8217;t need another message here. But this would be a
+good place to start running the stopwatch for timing our tests:</p>
+
+<pre><code>Stopwatch stopwatch = new Stopwatch();
+void onStart() =&gt; stopwatch.start();
+</code></pre>
+
+<p><code>Configuration</code> defines the twin <code>onTestStart()</code> and <code>onTestResult()</code> functions
+that basically define which test is currently being run:</p>
+
+<p>  void onTestStart(TestCase testCase) {</p>
+
+<pre><code>currentTestCase = testCase;
+</code></pre>
+
+<p>  }</p>
+
+<p>  void onTestResult(TestCase testCase) {</p>
+
+<pre><code>currentTestCase = null;
+</code></pre>
+
+<p>  }</p>
+
+<p>We don&#8217;t need to tinker with <code>onTestRun()</code>, but we&#8217;ll override <code>onTestResult()</code> to
+output the green <code>.</code> or red <code>F</code> for passing and failing tests, respectively:</p>
+
+<pre><code>void onTestResult(TestCase testCase) {
+  var color = testCase.result == PASS ? PASS_COLOR : FAIL_COLOR;
+  stdout.writeString("${color}${testCase.result == PASS ? '.' : 'F'}$RESET_COLOR");
+  currentTestCase = null;
+}
+</code></pre>
+
+<p>The <code>onDone()</code> function is where <code>Configuration</code> does the heavy lifting: it
+outputs the status and description of each test as well as the error messages
+and stack traces for failing tests. Then, it provides summary informtion for
+the test run. We&#8217;ll just skip over the passing tests and color-code our
+summary (it will be red if even a single test fails). Then, we will output
+the total time taken for the tests to run (remember the stopwatch we started in
+<code>onStart()</code>?.</p>
+
+<p>With a little bit of refactoring, and some additional formatting added to the
+output, here is what the script looks like:</p>
+
+<pre><code>library colorTestRunner;
+
+import 'package:unittest/unittest.dart';
+import 'dart:io';
+
+/// Overrides default Configuration to provide colorful command line
+/// output when tests are run. Loosely based on RSpec (https://www.relishapp.com/rspec).
+/// Outputs green (passing) "." and red (failing) "F" characters as tests are running. 
+/// If there are failing tests, provides detailed error report in red.
+/// Provides a short summary.
+class ColorTestRunner extends Configuration {
+  const String NEUTRAL_COLOR = "\u001b[33;34m"; // blue
+  const String PASS_COLOR = "\u001b[33;32m";    // green
+  const String FAIL_COLOR = "\u001b[33;31m";    // red
+  const String RESET_COLOR = "\u001b[33;0m";
+  const int BORDER_LENGTH = 80;
+
+  Stopwatch stopwatch = new Stopwatch();
+
+  void onInit() =&gt; _printResultHeader();
+  void onStart() =&gt; stopwatch.start();
+
+  void onTestResult(TestCase testCase) {
+    var color = testCase.result == PASS ? PASS_COLOR : FAIL_COLOR;
+    _colorPrint(color, testCase);
+    currentTestCase = null;
+  }
+
+  void onDone(int passed, int failed, int errors, List&lt;TestCase&gt; testCases,
+              String uncaughtError) {
+    stopwatch.stop();
+
+    _printFailingTestInfo(testCases);
+    _printSummary(passed, failed, errors, uncaughtError);
+    print("${NEUTRAL_COLOR}Total time = ${stopwatch.elapsedMilliseconds / 1000} seconds.$RESET_COLOR");
+  }
+
+  void _printFailingTestInfo(List&lt;TestCase&gt; testCases) {
+    print(FAIL_COLOR);
+    for (var testCase in testCases) {
+      if (testCase.result != PASS) {
+        print("${testCase.result.toUpperCase()}: ${testCase.description}");
+
+        if (testCase.message != '') {
+          print(testCase.message);
+        }
+
+        if (testCase.stackTrace != null &amp;&amp; testCase.stackTrace != '') {
+          print(testCase.stackTrace);
+        }
+
+        print(_repeatString(".", BORDER_LENGTH));
+      }
+    }
+    print(RESET_COLOR);
+  }
+
+  void _printSummary(int passed, int failed, int errors, String uncaughtError) {
+    if (_passed(failed, errors, uncaughtError)) {
+      print(PASS_COLOR); 
+      print("All $passed tests passed.");
+    } else {
+      print(FAIL_COLOR); 
+      if (_noTestsFound(passed, failed, errors)) {
+        print('No tests found.');
+      } else if (uncaughtError != null) {
+        print("Top-level uncaught error: $uncaughtError");
+      } else {
+        print("$passed PASSED, $failed FAILED, $errors ERRORS.");
+      }
+    }
+  }
+
+  bool _noTestsFound(int passed, int failed, int errors) {
+    return passed == 0 &amp;&amp; failed == 0 &amp;&amp; errors == 0;
+  }
+
+  bool _passed(int failed, int errors, String uncaughtError) {
+    return failed == 0 &amp;&amp; errors == 0 &amp;&amp; uncaughtError == null;
+  }
+
+  void _printResultHeader() {
+    print(NEUTRAL_COLOR);
+    Options options = new Options();  
+    String description = "Running tests for ${options.script}";
+    String frame = _repeatString("=", description.length);
+    print(frame);
+    print(description);
+    print(frame);
+    print(RESET_COLOR);
+  }
+
+  String _repeatString(String str, int times) {
+    StringBuffer sb = new StringBuffer();
+    for (var i = 0; i &lt; times; i++) {
+      sb.add(str);  
+    }
+    return sb.toString();
+  }
+
+  void _colorPrint(String color, TestCase testCase) {
+    stdout.writeString("${color}${testCase.result == PASS ? '.' : 'F'}$RESET_COLOR");
+  }
+}
+
+/// The function that should be called right before the tests.
+void useColorTestRunner() {
+  configure(new ColorTestRunner());
+}
+</code></pre>
+
+<p>To use this script, call the <code>useColorTestRunner()</code> just before where you have
+defined your tests. Here is a simple use case:</p>
+
+<pre><code>import 'package:unittest/unittest.dart';
+import '&lt;path to&gt;/color_test_runner.dart';
+
+num factorial(num n) {
+  if (n &lt; 2) {
+    return 1;
+  } else {
+    return n * factorial(n - 1);
+  }
+}
+
+void main() {
+  useColorTestRunner(); // we're using our own configuration
+
+  test("when n is 0", () {   
+    expect(factorial(0), equals(1));
+  });
+
+  test("when n is 1", () {
+    expect(factorial(1), equals(1));
+  });
+
+  test("when n is &gt; 1", () {
+    expect(factorial(5), equals(120));
+  });
+}
+</code></pre>
+
+<p>Call this from the command line: <code>dart &lt;test file&gt;.dart</code> and your output should
+look like this:</p>
+
+<p><img src="/images/passing_tests.png"></p>
+
+<p>Everything is green. Great! But perhaps you were in a hurry and got your <code>0</code> and
+<code>1</code> mixed up in the first test:</p>
+
+<pre><code>  test("when n is 0", () {   
+    expect(factorial(1), equals(0)); // oops....!
+  });
+</code></pre>
+
+<p>If you run the tests now, you&#8217;ll see:</p>
+
+<p><img src="images/failing_tests.png"></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Shailen Tuli</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-06T14:57:00-08:00" pubdate data-updated="true">Dec 6<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/dart/'>dart</a>, <a class='category' href='/blog/categories/dartlang/'>dartlang</a>, <a class='category' href='/blog/categories/unittest/'>unittest</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shailen.github.com/blog/2012/12/06/customizing-the-look-of-your-test-run-output/" data-via="shailentuli" data-counturl="http://shailen.github.com/blog/2012/12/06/customizing-the-look-of-your-test-run-output/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/11/21/using-setup-in-your-dart-tests/" title="Previous Post: using setUp() in your Dart tests">&laquo; using setUp() in your Dart tests</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/12/06/customizing-the-look-of-your-test-run-output/">customizing the look of your test run output</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/21/using-setup-in-your-dart-tests/">using setUp() in your Dart tests</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/20/grouping-dart-tests/">grouping dart tests</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/19/writing-unit-tests-for-pub-packages/">writing unit tests for pub packages</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/17/using-boolean-expressions-for-assignment-in-dart/">using boolean expressions for assignment in Dart</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/shailen">@shailen</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'shailen',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("shailentuli", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/shailentuli" class="twitter-follow-button" data-show-count="false">Follow @shailentuli</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/https://plus.google.com/109904716767428589938/posts?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Shailen Tuli -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'shailentuliblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://shailen.github.com/blog/2012/12/06/customizing-the-look-of-your-test-run-output/';
+        var disqus_url = 'http://shailen.github.com/blog/2012/12/06/customizing-the-look-of-your-test-run-output/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
