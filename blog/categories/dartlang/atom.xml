@@ -4,7 +4,7 @@
   <title><![CDATA[Category: dartlang | Shailen Tuli's blog]]></title>
   <link href="http://shailen.github.com/blog/categories/dartlang/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-12-06T23:10:07-08:00</updated>
+  <updated>2012-12-07T11:15:55-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -12,6 +12,133 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[running only some of your tests]]></title>
+    <link href="http://shailen.github.com/blog/2012/12/07/running-only-some-of-your-tests/"/>
+    <updated>2012-12-07T10:00:00-08:00</updated>
+    <id>http://shailen.github.com/blog/2012/12/07/running-only-some-of-your-tests</id>
+    <content type="html"><![CDATA[<p>The Dart <code>unittest</code> library allows you to run just a single test; to do so,
+just change the call for that test form <code>test()</code> to <code>solo_test()</code>.</p>
+
+<p>Another way to run a subset of your tests is by using the <code>filterTests()</code>
+function. <code>fitlerTests()</code> takes a String or a RegExp argument and matches
+it against each test description; if the description matches, the test
+runs, otherwise, it doesn't.</p>
+
+<p>Before you use <code>filterTests()</code>, you need to disable the automatic running of
+tests (set <code>autoStart</code> to false) and ensure that the your configuration is
+initialized.</p>
+
+<p>You can do this by creating a custom configuration:</p>
+
+<pre><code>import "package:unittest/unittest.dart";
+import "package:args/args.dart";
+
+class FilterTests extends Configuration {
+  get autoStart =&gt; false;
+}
+
+void useFilteredTests() {
+  configure(new FilterTests());
+  ensureInitialized();  
+}
+</code></pre>
+
+<p>Then, you can call <code>useFilteredTests()</code> in your <code>main()</code>, define all your
+tests, call <code>filteredTests()</code> with a string or regexp argument and run your
+tests using <code>runTests()</code>:</p>
+
+<pre><code>void main() {
+  useFilteredTests();
+
+  // your tests go here
+
+  filterTests(some_string_or_regexp);
+  runTests();
+}
+</code></pre>
+
+<p>Here is a little working example:</p>
+
+<pre><code>void main() {
+  useFilteredTests();
+
+  test("one test", () {
+    expect(1, equals(1));
+  }); 
+
+  test("another test", () {
+    expect(2, equals(2));
+  });
+
+  test("and another", () {
+    expect(3, equals(3));
+  });
+
+  filterTests('test');
+  // filterTests('another');
+
+  runTests();
+}
+</code></pre>
+
+<p><code>filterTests('test')</code> will run the first 2 tests; <code>filterTests('another')</code> will
+run the last 2 tests.</p>
+
+<p>It is easy to make this <em>considerably</em> more useful by getting the argument to
+<code>filterTests()</code> from the command line. That way, you can control what subset of
+tests to run without having to change the code in your test suite. Here is a
+slightly expanded version of the same example:</p>
+
+<pre><code>void main() {
+  useFilteredTests();
+  ArgParser argParser = new ArgParser();
+  Options options = new Options();
+  ArgResults results = argParser.parse(options.arguments);
+  List&lt;String&gt; args = results.rest; // get the args from the command line
+
+  test("one test", (){
+    expect(1, equals(1));
+  }); 
+
+  test("another test", (){
+    expect(2, equals(2));
+  });
+
+  test("and another", (){
+    expect(3, equals(3));
+  });
+
+  // we add a group() to show how we can easily run just the tests
+  // contained in it
+  group("foo", () {
+    test("this", (){
+      expect('bar', equals('bar'));
+    }); 
+
+    test("that", (){
+      expect('baz', equals('baz'));
+    });
+  });
+
+  if (!args.isEmpty) {
+    filterTests(args[0]);
+  }
+  runTests();
+}
+</code></pre>
+
+<p>You can run the tests from the command line by using the</p>
+
+<pre><code>`dart name_of_file.dart [keyword]`
+</code></pre>
+
+<p>syntax. If the keyword is <code>this</code>, only one test will run. If the keyword is
+<code>foo</code>, all tests in the <code>group()</code> with the description of <code>foo</code> will run.
+If you do not provide a keyword, all 5 tests will run.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[customizing the look of your test run output]]></title>
@@ -561,101 +688,6 @@ but we have only scratched the surface of how we should test our packages. For a
 in Dart, I would highly recommend a careful reading of <a href="http://www.dartlang.org/articles/dart-unit-tests/">Unit Testing with Dart</a> by Google engineer
 Graham Wheeler. He goes into considerable details about writing tests, defining <code>setUp()</code> and <code>tearDown()</code>, running asynchronous tests, using
 and creating matchers, and configuring your test environment.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[using boolean expressions for assignment in Dart]]></title>
-    <link href="http://shailen.github.com/blog/2012/11/17/using-boolean-expressions-for-assignment-in-dart/"/>
-    <updated>2012-11-17T21:52:00-08:00</updated>
-    <id>http://shailen.github.com/blog/2012/11/17/using-boolean-expressions-for-assignment-in-dart</id>
-    <content type="html"><![CDATA[<p>I often use boolean evaluation in Javascript for assignment:</p>
-
-<pre><code>var Point = function(options) {
-  options = options || {};
-  this.x = options['x'] || 0;
-  this.y = options['y'] || 0;
-}
-</code></pre>
-
-<p>And in Ruby, it is idiomatic to do something like this:</p>
-
-<pre><code>age ||= 16; // if age is `nil` or `false`, assign it a value of 16
-</code></pre>
-
-<p>or, this:</p>
-
-<pre><code>a, b, c = 1, 2, 3
-d = a &amp;&amp; b &amp;&amp; c
-// d gets the value of c, 3
-</code></pre>
-
-<p>In each case, the boolean expressions return the value of the last evaluation. Can I do something similar in Dart?
-Is this code legal?</p>
-
-<pre><code>var x; // x is null
-var y = x || 10;
-</code></pre>
-
-<p>In checked mode, no; in unchecked mode, this works, but the result may surprise you.</p>
-
-<p>Based on other languages I have used, I would expect <code>y</code> to equal <code>10</code>.
-In Dart, this does not happen and <code>y</code> gets assigned a value of <code>false</code>. Why? Since <code>10</code> is not explicitly <code>true</code>, it evaluates to
-<code>false</code>. All things that are not explicitly <code>true</code> in Dart, are false (see my <a href="http://shailen.github.com/blog/2012/11/16/booleans-in-dart/">post</a>
-from yesterday if this isn't clear).</p>
-
-<p>Now, in checked mode (you are using checked mode, right?), <code>y</code> doesn't get a value at all because we get an error:</p>
-
-<pre><code>Unhandled exception:
-type 'Null' is not a subtype of type 'bool' of 'boolean expression'.
-</code></pre>
-
-<p>This is Dart's way of telling us that it is not going to do implicit boolean conversion for us when using <code>||</code> and it expects to see a boolean where it
-now sees a <code>null</code> (<code>x</code> is null).  Changing the code to:</p>
-
-<pre><code>var y = 5 || 10;
-</code></pre>
-
-<p>we get a slightly different error message:</p>
-
-<pre><code>Unhandled exception:
-type 'int' is not a subtype of type 'bool' of 'boolean expression'.
-</code></pre>
-
-<p>No good. Dart wants booleans around the <code>||</code>. This works fine, but it isn't what we are looking for:</p>
-
-<pre><code>int x = 10;
-bool y = x % 3 == 1 || x % 5 == 2;
-// y is true
-</code></pre>
-
-<p>So, is there a correct way to handle assignment based on boolean evaluation? Yes. Don't rely on <code>||</code> or <code>&amp;&amp;</code> to implicitly
-handle this for you; instead, explicitly check for truthyness yourself:</p>
-
-<pre><code>int y = x == null ? 0 : x;
-</code></pre>
-
-<p>If <code>x</code> is null, <code>y</code> will be <code>0</code>; else, it will have the value of <code>x</code>. Quite clear and readable.</p>
-
-<p>Boolean based assignment is common in JavaScript because there we don't have as rich an understanding
-of keyword arguments and default values as Dart has. In Dart, we can do this:</p>
-
-<pre><code>myFunction({x: 0, y: 0}) {
-  ...
-}
-</code></pre>
-
-<p>If you need to check whether a parameter was passed a value or not, you can easily do so:</p>
-
-<pre><code>myFunction([x=0]) {
-  if (?x) {
-    ...
-  }
-}
-</code></pre>
-
-<p>The lessons of all this? <strong>Use checked mode</strong>. Don't rely on Dart's boolean expressions to magically return boolean values; if such values
-are needed, obtain them directly yourself. Be explicit. Use default arguemnts in functions and methods. Use <code>?</code> to check if a parameter was passed.</p>
 ]]></content>
   </entry>
   
