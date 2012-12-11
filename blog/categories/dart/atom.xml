@@ -4,7 +4,7 @@
   <title><![CDATA[Category: dart | Shailen Tuli's blog]]></title>
   <link href="http://shailen.github.com/blog/categories/dart/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-12-10T19:25:48-08:00</updated>
+  <updated>2012-12-10T19:30:46-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[running only some of your tests]]></title>
+    <title type="html"><![CDATA[Running Only Some of Your Dart Tests: solo_test() and filterTests()]]></title>
     <link href="http://shailen.github.com/blog/2012/12/07/running-only-some-of-your-tests/"/>
     <updated>2012-12-07T10:00:00-08:00</updated>
     <id>http://shailen.github.com/blog/2012/12/07/running-only-some-of-your-tests</id>
@@ -22,7 +22,7 @@
 just change the call for that test form <code>test()</code> to <code>solo_test()</code>.</p>
 
 <p>Another way to run a subset of your tests is by using the <code>filterTests()</code>
-function. <code>fitlerTests()</code> takes a String or a RegExp argument and matches
+function. <code>filterTests()</code> takes a String or a RegExp argument and matches
 it against each test description; if the description matches, the test
 runs, otherwise, it doesn't.</p>
 
@@ -141,7 +141,7 @@ If you do not provide a keyword, all 5 tests will run.</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[customizing the look of your test run output]]></title>
+    <title type="html"><![CDATA[Dart: Customizing Unittest Run Output]]></title>
     <link href="http://shailen.github.com/blog/2012/12/06/customizing-the-look-of-your-test-run-output/"/>
     <updated>2012-12-06T14:57:00-08:00</updated>
     <id>http://shailen.github.com/blog/2012/12/06/customizing-the-look-of-your-test-run-output</id>
