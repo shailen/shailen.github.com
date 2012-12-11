@@ -3,7 +3,7 @@ layout: post
 title: "Randomness in Dart: nextBool(), nextInt(), and nextDouble()"
 date: 2012-12-10 14:36
 comments: true
-categories: 
+categories: [dartlang, dart, random, dart:math]
 ---
 
 The `Random` class in `dart:math` contains 3 methods, `nextBool()`, `nextInt()`
