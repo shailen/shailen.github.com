@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "running only some of your tests"
+title: "Running Only Some of Your Dart Tests: solo_test() and filterTests()"
 date: 2012-12-07 10:00
 comments: true
 categories: [dartlang, dart, unittest, argparse]
@@ -9,7 +9,7 @@ The Dart `unittest` library allows you to run just a single test; to do so,
 just change the call for that test form `test()` to `solo_test()`. 
 
 Another way to run a subset of your tests is by using the `filterTests()`
-function. `fitlerTests()` takes a String or a RegExp argument and matches
+function. `filterTests()` takes a String or a RegExp argument and matches
 it against each test description; if the description matches, the test 
 runs, otherwise, it doesn't. 
 

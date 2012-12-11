@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "customizing the look of your test run output"
+title: "Dart: Customizing Unittest Run Output"
 date: 2012-12-06 14:57
 comments: true
 categories: [dartlang, dart, unittest]
