@@ -9,8 +9,8 @@
   <meta name="author" content="Shailen Tuli">
 
   
-  <meta name="description" content="The Dart unittest library allows you to run just a single test; to do so,
-just change the call for that test form test() to solo_test(). Another way &hellip;">
+  <meta name="description" content="The Random class in dart:math contains 3 methods, nextBool(), nextInt()
+and nextDouble(). To use Random, you will need a import 'dart:math in your &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,124 @@ just change the call for that test form test() to solo_test(). Another way &hell
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/12/10/random-dart-nextbool-nextint-and-nextdouble/">Randomness in Dart: nextBool(), nextInt(), and nextDouble()</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-10T14:36:00-08:00" pubdate data-updated="true">Dec 10<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/12/10/random-dart-nextbool-nextint-and-nextdouble/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The <code>Random</code> class in <code>dart:math</code> contains 3 methods, <code>nextBool()</code>, <code>nextInt()</code>
+and <code>nextDouble()</code>. To use <code>Random</code>, you will need a <code>import 'dart:math</code> in your
+code.</p>
+
+<h2>nextBool()</h2>
+
+<p>simply returns <code>true</code> or <code>false</code> at random. Here is a little
+function, <code>randUpcase()</code> that demonstrates <code>randBool()</code> use. <code>randUpcase()</code>
+takes a string as an argument, and converts each character in the string to
+uppercase if random.nextBool() is <code>true</code> and leaves it untouched if it is
+<code>false</code>.</p>
+
+<pre><code>String randUpcase(String s) {
+  Random random = new Random();
+  List&lt;String&gt; chars = s.split('');
+  return Strings.join(chars.map(
+    (char) =&gt; random.nextBool() ? char.toUpperCase() : char), '');
+}
+</code></pre>
+
+<p>And here is some sample usage:</p>
+
+<pre><code>var herbs = ["parsley", "sage", "rosemary", "thyme"];
+print(herbs.map((herb) =&gt; randUpcase(herb))); // [pARslEY, SaGE, roSEMaRY, tHYME]
+</code></pre>
+
+<h2>nextInt()</h2>
+
+<p>takes a <code>max</code> int argument and generates a positive int between 0 (inclusive) and <code>max</code>, exclusive.</p>
+
+<p>To generate a random int within a range, you can do something like this:</p>
+
+<pre><code>int randRange(int min, int max) {
+  var random = new Random();
+  return min + random.nextInt(max - min);
+}
+</code></pre>
+
+<p>You can also use <code>nextInt()</code> to randomly shuffle a list (using the familiar
+Fisher-Yates-Knuth algorithm):</p>
+
+<pre><code>List shuffle(List items) {
+  var random = new Random();
+  for (var i = items.length - 1; i &gt; 0; i--) {
+    var j = random.nextInt(i);
+    var temp = items[i];
+    items[i] = items[j];
+    items[j] = temp;
+  }
+  return items;
+}
+</code></pre>
+
+<p>You can use it like this:</p>
+
+<pre><code>var items = ["fee", "fi", "fo", "fum", "smell", "Englishman"];
+print(shuffle(items)); // [fo, smell, fum, Englishman, fee, fi]
+</code></pre>
+
+<h2>nextDouble()</h2>
+
+<p>generates a random floating point value distributed between 0.0
+and 1.0. Here is a little function to simulate a biased coin toss; the <code>percent</code>
+argument alters the percent a coin will return heads (&#8216;H&#8217;). This is pretty much cribbed from
+<a href="http://stackoverflow.com/questions/477237/how-do-i-simulate-flip-of-biased-coin-in-python">this discussion on Stack Overflow</a>:</p>
+
+<pre><code>String flip(num percent) {
+  Random random = new Random();
+  return random.nextDouble() &lt; percent ? 'H' : 'T';
+}
+</code></pre>
+
+<p>And here is some code to test that it works:</p>
+
+<pre><code>int n = 1000;
+int heads = 0;
+for (var i = 0; i &lt; 1000; i++) {
+  if(flip(.20) == "H") heads++;
+}
+print(heads/n); // 0.209, 0.196, etc.
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1382,104 +1500,6 @@ doing this sort of thing can lead to hard to maintain code. An abudance of cauti
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/11/13/string-concatenation-in-dart/">String Concatenation in Dart</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-13T17:33:00-08:00" pubdate data-updated="true">Nov 13<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012/11/13/string-concatenation-in-dart/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Let us start with a simple helloworld.dart example and use it to see how string concatenation works in Dart.</p>
-
-<pre><code>void main() {
-  print("hello, world!");
-}
-</code></pre>
-
-<p>The above works, obviously. Now, if we were given this greeting as two strings, &#8220;hello, &#8221; and &#8220;world!&#8221;, and asked
-to join them together, we might be tempted to do:</p>
-
-<pre><code>"hello, " + "world!"
-</code></pre>
-
-<p>This works in lots of languages, but not in Dart. The + operator has not been overloaded in the String class, the above code throws
-a <code>NoSuchMethodError</code>.</p>
-
-<p>Not a problem: Dart gives us lots of ways to contcatenate strings. I list the most common ways
-below. <em>Above the examples you will see some <strong>crude</strong> benchmarks that I calculated by running each example a million
-times on my MacBook. These can give a <strong>general</strong> sense of the relative efficiency of each method</em>.</p>
-
-<p>The easiest, most efficient way to concat strings is by using adjacent string literals:</p>
-
-<pre><code>.041 seconds
-String a = "hello, " "world!";
-</code></pre>
-
-<p>This still works if the adjacent strings are on different lines:</p>
-
-<pre><code>.040 seconds
-String b = "hello, "
-    'world!';
-</code></pre>
-
-<p>Dart also has a <code>StringBuffer</code> class, and this can be used to build up a <code>StringBuffer</code> object
-and convert it to a string by calling <code>toString()</code> on it:</p>
-
-<pre><code>.689 seconds
-var sb = new StringBuffer();
-["hello, ", "world!"].forEach((item) {
-  sb.add(item);
-  });
-String c = sb.toString();
-</code></pre>
-
-<p>The <code>Strings</code> class (notice the plural) gives us 2 methods, <code>join()</code> and <code>concatAll()</code> that
-can also be used. <code>Strings.join()</code> takes a delimiter as a second argument:</p>
-
-<pre><code>.408 seconds
-String d = Strings.join(["hello", "world!"], ", ");
-
-.385 seconds
-String e = Strings.concatAll(["hello", "world"]);
-</code></pre>
-
-<p>All of the above work, but if you are looking for a <code>+</code> substitute, use adjacent string literals;
-if you need to join a list of strings using a delimiter,
-use <code>Strings.join()</code>. If you plan on building a very long string, the
-<code>StringBuffer</code> class can gather the components quite efficiently and convert them to a string only
-when needed.</p>
-
-<p>You can also use string interpolation; that will be the subject of my next post.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1495,6 +1515,10 @@ when needed.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/12/10/random-dart-nextbool-nextint-and-nextdouble/">Randomness in Dart: nextBool(), nextInt(), and nextDouble()</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/12/07/running-only-some-of-your-tests/">running only some of your tests</a>
       </li>
     
@@ -1508,10 +1532,6 @@ when needed.</p>
     
       <li class="post">
         <a href="/blog/2012/11/20/grouping-dart-tests/">grouping dart tests</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/19/writing-unit-tests-for-pub-packages/">writing unit tests for pub packages</a>
       </li>
     
   </ul>

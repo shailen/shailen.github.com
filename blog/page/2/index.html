@@ -9,8 +9,8 @@
   <meta name="author" content="Shailen Tuli">
 
   
-  <meta name="description" content="Building web applications is hard. Building large web applications is a real challenge. Given this, I am super
-excited by the emergence of Dart as a &hellip;">
+  <meta name="description" content="Let us start with a simple helloworld.dart example and use it to see how string concatenation works in Dart. void main() { print("hello, world!");
+} &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,104 @@ excited by the emergence of Dart as a &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/13/string-concatenation-in-dart/">String Concatenation in Dart</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-13T17:33:00-08:00" pubdate data-updated="true">Nov 13<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/13/string-concatenation-in-dart/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Let us start with a simple helloworld.dart example and use it to see how string concatenation works in Dart.</p>
+
+<pre><code>void main() {
+  print("hello, world!");
+}
+</code></pre>
+
+<p>The above works, obviously. Now, if we were given this greeting as two strings, &#8220;hello, &#8221; and &#8220;world!&#8221;, and asked
+to join them together, we might be tempted to do:</p>
+
+<pre><code>"hello, " + "world!"
+</code></pre>
+
+<p>This works in lots of languages, but not in Dart. The + operator has not been overloaded in the String class, the above code throws
+a <code>NoSuchMethodError</code>.</p>
+
+<p>Not a problem: Dart gives us lots of ways to contcatenate strings. I list the most common ways
+below. <em>Above the examples you will see some <strong>crude</strong> benchmarks that I calculated by running each example a million
+times on my MacBook. These can give a <strong>general</strong> sense of the relative efficiency of each method</em>.</p>
+
+<p>The easiest, most efficient way to concat strings is by using adjacent string literals:</p>
+
+<pre><code>.041 seconds
+String a = "hello, " "world!";
+</code></pre>
+
+<p>This still works if the adjacent strings are on different lines:</p>
+
+<pre><code>.040 seconds
+String b = "hello, "
+    'world!';
+</code></pre>
+
+<p>Dart also has a <code>StringBuffer</code> class, and this can be used to build up a <code>StringBuffer</code> object
+and convert it to a string by calling <code>toString()</code> on it:</p>
+
+<pre><code>.689 seconds
+var sb = new StringBuffer();
+["hello, ", "world!"].forEach((item) {
+  sb.add(item);
+  });
+String c = sb.toString();
+</code></pre>
+
+<p>The <code>Strings</code> class (notice the plural) gives us 2 methods, <code>join()</code> and <code>concatAll()</code> that
+can also be used. <code>Strings.join()</code> takes a delimiter as a second argument:</p>
+
+<pre><code>.408 seconds
+String d = Strings.join(["hello", "world!"], ", ");
+
+.385 seconds
+String e = Strings.concatAll(["hello", "world"]);
+</code></pre>
+
+<p>All of the above work, but if you are looking for a <code>+</code> substitute, use adjacent string literals;
+if you need to join a list of strings using a delimiter,
+use <code>Strings.join()</code>. If you plan on building a very long string, the
+<code>StringBuffer</code> class can gather the components quite efficiently and convert them to a string only
+when needed.</p>
+
+<p>You can also use string interpolation; that will be the subject of my next post.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -217,6 +315,10 @@ embed code from jsFiddle, and publish easily via a git push.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/12/10/random-dart-nextbool-nextint-and-nextdouble/">Randomness in Dart: nextBool(), nextInt(), and nextDouble()</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/12/07/running-only-some-of-your-tests/">running only some of your tests</a>
       </li>
     
@@ -230,10 +332,6 @@ embed code from jsFiddle, and publish easily via a git push.</p>
     
       <li class="post">
         <a href="/blog/2012/11/20/grouping-dart-tests/">grouping dart tests</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/19/writing-unit-tests-for-pub-packages/">writing unit tests for pub packages</a>
       </li>
     
   </ul>
