@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Running Only Some of Your Dart Tests: solo_test() and filterTests()"
+title: "Running Only Some of Your Dart Tests: using solo_test() and filterTests()"
 date: 2012-12-07 10:00
 comments: true
 categories: [dartlang, dart, unittest, argparse]
