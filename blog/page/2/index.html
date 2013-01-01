@@ -9,8 +9,8 @@
   <meta name="author" content="Shailen Tuli">
 
   
-  <meta name="description" content="Let us start with a simple helloworld.dart example and use it to see how string concatenation works in Dart. void main() { print("hello, world!");
-} &hellip;">
+  <meta name="description" content="You can access the value of an expression inside a string by using ${expression}. var greeting = "Hello";
+var person = "Rohan"; print("${greeting &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,106 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/14/dart-string-interpolation/">Dart String Interpolation</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-14T11:23:00-08:00" pubdate data-updated="true">Nov 14<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/14/dart-string-interpolation/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>You can access the value of an expression inside a string by using <code>${expression}</code>.</p>
+
+<pre><code>var greeting = "Hello";
+var person = "Rohan";
+
+print("${greeting}, ${person}!"); // prints "Hello, Rohan!"
+</code></pre>
+
+<p>If the expression is an identifier, the <code>{}</code> can be skipped.</p>
+
+<pre><code>print("$greeting, $person");
+</code></pre>
+
+<p>If the variable inside the <code>{}</code> isn&#8217;t a string, the variable&#8217;s <code>toString()</code> method is called:</p>
+
+<pre><code>int x = 5;
+print("There are ${x.toString()} people in this room");
+</code></pre>
+
+<p>The call to <code>toString()</code> is unnecessary (although harmless) in this case: <code>toString()</code> is already defined
+for ints and Dart automatically calls <code>toString()</code>. What this does mean, though, is that it is the user&#8217;s
+responsibility to define a <code>toString()</code> method when interpolating user-defined objects.</p>
+
+<p>You can interpolate expressions of arbitrary complexity by placing them inside <code>${}</code>:</p>
+
+<p>A ternary <code>if..else</code>:</p>
+
+<pre><code>int x = 5;
+print("There are ${x &lt; 10 ? "a few" : "many"} people in this room");
+</code></pre>
+
+<p>List and Map operations:</p>
+
+<pre><code>List list = [1, 2, 3, 4, 5];
+print("The list is $list, and when squared it is ${list.map((i) {return i * i;})}");
+// The list is [1, 2, 3, 4, 5], and when squared it is [1, 4, 9, 16, 25]
+
+Map map = {"ca": "California", "pa": "Pennsylvania"};
+print("I live in sunny ${map['ca']}");
+// I live in sunny California
+</code></pre>
+
+<p>Notice above that you can access <code>$list</code>(an identifier) without using <code>{}</code>, but the call to <code>list.map</code>(an expression)
+needs to be inside <code>{}</code>. Similarly, in the example below, <code>$x</code> works, but <code>{}</code> are required for <code>-x</code>:</p>
+
+<pre><code>print("x = $x and -x = ${-x}");
+// x = 5 and -x = -5
+</code></pre>
+
+<p>Expressions inside <code>${}</code> can be arbitrarily complex:</p>
+
+<pre><code>List names = ['John', 'Sophena', 'Henrietta'];
+print("${
+  ((names) {
+      return names[(new math.Random()).nextInt(names.length)];
+  })(names)} is the most valueable member of our team");
+</code></pre>
+
+<p>The code above defines an anonymous function to pick a random name from a list and then calls that function with
+<code>names</code> as an argument. All of this is done as part of string interpolation.</p>
+
+<p>Creating a function and immediately calling it is useful in a lot of situations (it is a common practice in Javascript); but, watch out:
+doing this sort of thing can lead to hard to maintain code. An abudance of caution is advised ;)</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -315,6 +415,10 @@ embed code from jsFiddle, and publish easily via a git push.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/12/29/setting-up-continuous-integration-for-dart-using-drone-io/">setting up continuous integration for dart using drone.io</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/12/10/random-dart-nextbool-nextint-and-nextdouble/">Randomness in Dart: nextBool(), nextInt(), and nextDouble()</a>
       </li>
     
@@ -328,10 +432,6 @@ embed code from jsFiddle, and publish easily via a git push.</p>
     
       <li class="post">
         <a href="/blog/2012/11/21/using-setup-in-your-dart-tests/">using setUp() in your Dart tests</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/20/grouping-dart-tests/">grouping dart tests</a>
       </li>
     
   </ul>
