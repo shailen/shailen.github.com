@@ -4,7 +4,7 @@
   <title><![CDATA[Shailen Tuli's blog]]></title>
   <link href="http://shailen.github.com/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2012-12-31T17:16:21-08:00</updated>
+  <updated>2012-12-31T18:01:54-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[setting up continuous integration for dart using drone.io]]></title>
-    <link href="http://shailen.github.com/blog/2012/12/29/setting-up-continuous-integration-for-dart-using-drone-io/"/>
-    <updated>2012-12-29T14:58:00-08:00</updated>
-    <id>http://shailen.github.com/blog/2012/12/29/setting-up-continuous-integration-for-dart-using-drone-io</id>
+    <link href="http://shailen.github.com/blog/2012/12/31/setting-up-continuous-integration-for-dart-using-drone-io/"/>
+    <updated>2012-12-31T14:58:00-08:00</updated>
+    <id>http://shailen.github.com/blog/2012/12/31/setting-up-continuous-integration-for-dart-using-drone-io</id>
     <content type="html"><![CDATA[<h2>Creating a dummy project</h2>
 
 <p>I created a very simple project, <code>droneDemo</code>, to show how to set up Continuous Integration
