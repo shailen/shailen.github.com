@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "setting up continuous integration for dart using drone.io"
-date: 2012-12-29 14:58
+date: 2012-12-31 14:58
 comments: true
 categories: 
 ---
