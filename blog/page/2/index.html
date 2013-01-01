@@ -9,8 +9,8 @@
   <meta name="author" content="Shailen Tuli">
 
   
-  <meta name="description" content="You can access the value of an expression inside a string by using ${expression}. var greeting = "Hello";
-var person = "Rohan"; print("${greeting &hellip;">
+  <meta name="description" content="In my Python programs, I found use for the ord() and chr() builtins to convert between string characters and their
+ASCII representations. Similar &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,132 @@ var person = "Rohan"; print("${greeting &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/15/character-codes-and-strings-in-dart/">Character Codes and Strings in Dart</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-15T15:29:00-08:00" pubdate data-updated="true">Nov 15<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/15/character-codes-and-strings-in-dart/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In my Python programs, I found use for the <code>ord()</code> and <code>chr()</code> builtins to convert between string characters and their
+ASCII representations. Similar tools exist in Dart. To get a list of character codes for a string, use <code>charCodes</code>:</p>
+
+<pre><code>String s = "hello";
+print(s.charCodes);
+// [104, 101, 108, 108, 111]
+</code></pre>
+
+<p>To get a specific character code, you can either subscript <code>charCodes</code>:</p>
+
+<pre><code>print(s.charCodes[0]); 
+</code></pre>
+
+<p>or - this is the more common way - use <code>charCodeAt</code>:</p>
+
+<pre><code>print(s.charCodeAt(0));
+</code></pre>
+
+<p>To assemble a string from a list of character codes, use the <code>String</code> factory, <code>fromCharCodes</code>:</p>
+
+<pre><code>List&lt;int&gt; charCodes = [104, 101, 108, 108, 111];
+print(new String.fromCharCodes(charCodes));
+// "hello"
+</code></pre>
+
+<p>If you are using a StringBuffer to build up a string, you can add individual charCodes using <code>addCharCode</code>
+(use <code>add()</code> to add characters; use <code>addCharCode()</code> to add charCodes):</p>
+
+<pre><code>StringBuffer sb = new StringBuffer();
+charCodes.forEach((charCode) {
+  sb.addCharCode(charCode);
+});
+
+print(sb.toString());
+// "Hello" 
+</code></pre>
+
+<p>Here is an implementation of the <code>rot13</code> algorithm, using the tools described above. <code>rot13</code>
+is a simple letter substitution algorithm that rotates a string by 13 places by replacing each
+character in it by one that is 13 characters removed (&#8216;a&#8217; becomes &#8216;n&#8217;, &#8216;N&#8217; becomes &#8216;A&#8217;, etc.):</p>
+
+<pre><code>String rot13(String s) {
+  List&lt;int&gt; rotated = [];
+
+  s.charCodes.forEach((charCode) {
+    final int numLetters = 26;
+    final int A = 65;
+    final int a = 97;
+    final int Z = A + numLetters;
+    final int z = a + numLetters;
+
+    if (charCode &lt; A ||
+        charCode &gt; z ||
+        charCode &gt; Z &amp;&amp; charCode &lt; a) {
+      rotated.add(charCode);
+    }
+    else {
+      if ([A, a].some((item){
+        return item &lt;= charCode &amp;&amp; charCode &lt; item + 13;
+      })) {
+        rotated.add(charCode + 13);
+      } else {
+        rotated.add(charCode - 13);
+      }   
+    }
+  });
+
+  return (new String.fromCharCodes(rotated));
+}
+</code></pre>
+
+<p>Running the code:</p>
+
+<pre><code>var wordsList = [["Jung", "be", "purely", "barf"],
+                  ["aha", "nun"]];
+wordsList.forEach((word_list) {
+  print(word_list.map((word) {
+    return rot13(word);
+  }));
+});
+// ["What", "or", "cheryl", "ones"]
+// ["nun", "aha"] 
+</code></pre>
+
+<p>and:</p>
+
+<pre><code>String str = "aMz###AmZ";
+assert(rot13(rot13(str)) == str);
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -415,6 +541,10 @@ embed code from jsFiddle, and publish easily via a git push.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/12/31/a-first-app-with-web-components-using-dart/">A first app with web components using Dart and Web UI library</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/12/31/setting-up-continuous-integration-for-dart-using-drone-io/">setting up continuous integration for dart using drone.io</a>
       </li>
     
@@ -428,10 +558,6 @@ embed code from jsFiddle, and publish easily via a git push.</p>
     
       <li class="post">
         <a href="/blog/2012/12/06/customizing-the-look-of-your-test-run-output/">Dart: Customizing Unittest Run Output</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/21/using-setup-in-your-dart-tests/">using setUp() in your Dart tests</a>
       </li>
     
   </ul>
@@ -502,7 +628,7 @@ embed code from jsFiddle, and publish easily via a git push.</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2012 - Shailen Tuli -
+  Copyright &copy; 2013 - Shailen Tuli -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
