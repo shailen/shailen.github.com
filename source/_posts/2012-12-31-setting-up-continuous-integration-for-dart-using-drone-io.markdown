@@ -3,7 +3,7 @@ layout: post
 title: "setting up continuous integration for dart using drone.io"
 date: 2012-12-31 14:58
 comments: true
-categories: 
+categories: [dart, dartlang, drone]
 ---
 
 ## Creating a dummy project
