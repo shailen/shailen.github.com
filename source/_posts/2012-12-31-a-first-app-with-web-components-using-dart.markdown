@@ -84,14 +84,14 @@ into the app:
         
         <ul id="books">
           <template iterate="book in books">
-            <x-book-item book="{{ book }}"></x-book-item>
+            <x-book-item book="\{\{ book \}\}"></x-book-item>
           </template>
         </ul>
           
         <!-- this is the non web-component way to create the <li>s
         <ul>
           <template iterate='book in books'>
-            <li>{{ book.title }}</li>
+            <li>\{\{ book.title \}\}</li>
           </template>
         </ul>
         -->
@@ -122,7 +122,7 @@ And finally the code that actually deals with the web component:
 
     <ul id="books">
       <template iterate="book in books">
-        <x-book-item book="{{ book }}"></x-book-item>
+        <x-book-item book="\{\{ book \}\}"></x-book-item>
       </template>
     </ul>
 
@@ -177,7 +177,7 @@ This contains the code that defines our web component:
       <body>
         <element name="x-book-item" constructor="BookComponent" extends="li">
           <template> 
-            <li>{{ book.title }}</li>
+            <li>\{\{ book.title \}\}</li>
           </template>
           
           <script type="application/dart" src="book_component.dart"></script>
@@ -208,8 +208,9 @@ the `<element>` we created in `book_componenet.html` use this constructor?):
     }
 
 `BookComponent` extends `WebComponent` (this is the only option for subclassing
-at the moment; that may change in the future) and contains a `book` attribute.
-That's it.
+at the moment; that may change in the future) and contains a `book` attribute
+(this can be set using the `book = ` syntax when the web component is
+initialized). That's it.
 
 ## build.dart
 
