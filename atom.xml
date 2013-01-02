@@ -4,7 +4,7 @@
   <title><![CDATA[Shailen Tuli's blog]]></title>
   <link href="http://shailen.github.com/atom.xml" rel="self"/>
   <link href="http://shailen.github.com/"/>
-  <updated>2013-01-01T13:21:26-08:00</updated>
+  <updated>2013-01-01T16:42:42-08:00</updated>
   <id>http://shailen.github.com/</id>
   <author>
     <name><![CDATA[Shailen Tuli]]></name>
@@ -97,14 +97,14 @@ into the app:</p>
 
     &lt;ul id="books"&gt;
       &lt;template iterate="book in books"&gt;
-        &lt;x-book-item book=""&gt;&lt;/x-book-item&gt;
+        &lt;x-book-item book="\{\{ book \}\}"&gt;&lt;/x-book-item&gt;
       &lt;/template&gt;
     &lt;/ul&gt;
 
     &lt;!-- this is the non web-component way to create the &lt;li&gt;s
     &lt;ul&gt;
       &lt;template iterate='book in books'&gt;
-        &lt;li&gt;&lt;/li&gt;
+        &lt;li&gt;\{\{ book.title \}\}&lt;/li&gt;
       &lt;/template&gt;
     &lt;/ul&gt;
     --&gt;
@@ -137,7 +137,7 @@ button is clicked, <code>createNewBook()</code> fires (we&#8217;ll get to that f
 
 <pre><code>&lt;ul id="books"&gt;
   &lt;template iterate="book in books"&gt;
-    &lt;x-book-item book=""&gt;&lt;/x-book-item&gt;
+    &lt;x-book-item book="\{\{ book \}\}"&gt;&lt;/x-book-item&gt;
   &lt;/template&gt;
 &lt;/ul&gt;
 </code></pre>
@@ -196,7 +196,7 @@ display.</p>
   &lt;body&gt;
     &lt;element name="x-book-item" constructor="BookComponent" extends="li"&gt;
       &lt;template&gt; 
-        &lt;li&gt;&lt;/li&gt;
+        &lt;li&gt;\{\{ book.title \}\}&lt;/li&gt;
       &lt;/template&gt;
 
       &lt;script type="application/dart" src="book_component.dart"&gt;&lt;/script&gt;
@@ -229,8 +229,9 @@ class BookComponent extends WebComponent {
 </code></pre>
 
 <p><code>BookComponent</code> extends <code>WebComponent</code> (this is the only option for subclassing
-at the moment; that may change in the future) and contains a <code>book</code> attribute.
-That&#8217;s it.</p>
+at the moment; that may change in the future) and contains a <code>book</code> attribute
+(this can be set using the <code>book =</code> syntax when the web component is
+initialized). That&#8217;s it.</p>
 
 <h2>build.dart</h2>
 
