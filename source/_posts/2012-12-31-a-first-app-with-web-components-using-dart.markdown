@@ -84,14 +84,14 @@ into the app:
         
         <ul id="books">
           <template iterate="book in books">
-            <x-book-item book="\{\{ book \}\}"></x-book-item>
+            {% raw %}<x-book-item book="{{ book }}"></x-book-item>{% endraw %}
           </template>
         </ul>
           
         <!-- this is the non web-component way to create the <li>s
         <ul>
           <template iterate='book in books'>
-            <li>\{\{ book.title \}\}</li>
+            <li>{% raw %}{{ book.title }}{% endraw %}</li>
           </template>
         </ul>
         -->
@@ -122,7 +122,7 @@ And finally the code that actually deals with the web component:
 
     <ul id="books">
       <template iterate="book in books">
-        <x-book-item book="\{\{ book \}\}"></x-book-item>
+        {% raw %}<x-book-item book="{{ book }}"></x-book-item>{% endraw %}
       </template>
     </ul>
 
@@ -177,7 +177,7 @@ This contains the code that defines our web component:
       <body>
         <element name="x-book-item" constructor="BookComponent" extends="li">
           <template> 
-            <li>\{\{ book.title \}\}</li>
+            <li>{% raw %}{{ book.title }}{% endraw %}</li>
           </template>
           
           <script type="application/dart" src="book_component.dart"></script>
